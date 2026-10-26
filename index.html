@@ -1,796 +1,374 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>RAMU — Creative Developer & AI/ML Engineer</title>
-  <meta name="description" content="Portfolio of Ramu (codebyramu) — Creative Developer, AI/ML Engineer, and UI/UX Specialist from Chennai, India. Creator of Ramu-AI, VOCARA, Vadivelu AI Agent, and HyperCade." />
-  <meta name="theme-color" content="#070709" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080809">
+  <title>RAMU® — Creative Developer & AI/ML Engineer</title>
+  <meta name="description" content="RAMU® — Creative Developer & AI/ML Engineer. Code. Music. Craft. A high-octane cinematic scroll-driven portfolio.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="RAMU — Creative Developer & AI/ML Engineer" />
-  <meta property="og:description" content="High-octane portfolio of Ramu (codebyramu). AI Systems, Audio DSP, Creative Coding, and Frontend Craft." />
-  <meta property="og:image" content="hero-ramu-title.jpg" />
-  <meta property="og:type" content="website" />
-
   <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- CDNs for Smooth Animation and Physics -->
+  <!-- Core Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="bg-black text-white selection:bg-red-600 selection:text-white">
-  <!-- Noise & Ambient FX Overlay -->
-  <div class="noise-overlay" aria-hidden="true"></div>
-  <div class="ambient-glow" id="ambientGlow" aria-hidden="true"></div>
+<body>
+  <!-- Ambient Grain Overlay & Cursor Glow -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
-  <!-- Custom Physics Cursor -->
-  <div class="cursor-dot" id="cursorDot"></div>
-  <div class="cursor-ring" id="cursorRing">
-    <span class="cursor-label" id="cursorLabel"></span>
-  </div>
-
-  <!-- Top Navigation Bar -->
-  <header class="site-header" id="siteHeader">
-    <div class="header-inner">
-      <a href="#hero" class="brand-badge magnetic" data-cursor="HOME">
-        <span class="brand-monogram">R</span>
-        <span class="brand-text">RAMU<span class="brand-dot">.</span>DEV</span>
+  <!-- Navigation -->
+  <nav aria-label="Main navigation">
+    <a class="brand" href="#top">RAMU<span>®</span></a>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#film">Drift</a>
+      <a href="#work">Work</a>
+      <a href="#skills">Toolkit</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a href="resume.pdf" target="_blank" class="nav-resume-btn">
+        <i data-lucide="file-text" class="icon-sm"></i>
+        <span>Resume</span>
       </a>
+      <div class="availability mono">
+        <span class="dot"></span> OPEN TO OPPORTUNITIES
+      </div>
+    </div>
+  </nav>
 
-      <nav class="desktop-nav">
-        <a href="#hero" class="nav-link magnetic" data-cursor="EXPLORE">Hero</a>
-        <a href="#about" class="nav-link magnetic" data-cursor="BIO">Identity</a>
-        <a href="#projects" class="nav-link magnetic" data-cursor="WORK">Projects</a>
-        <a href="#skills" class="nav-link magnetic" data-cursor="STACK">Arsenal</a>
-        <a href="#terminal-section" class="nav-link magnetic" data-cursor="AI CLI">Terminal</a>
-        <a href="#contact" class="nav-link magnetic" data-cursor="CONNECT">Contact</a>
-      </nav>
+  <!-- Hero Header -->
+  <header class="hero" id="top">
+    <!-- Clean background video file load (NO base64 bloat) -->
+    <div class="hero-art">
+      <video id="heroVideoLoop" muted playsinline autoplay loop preload="auto" poster="hero-poster.jpg" src="hero-video.mp4"></video>
+    </div>
 
-      <div class="header-actions">
-        <a href="resume.pdf" target="_blank" class="btn-resume magnetic" data-cursor="DOWNLOAD">
-          <i data-lucide="file-text" class="btn-icon"></i>
-          <span>Resume</span>
-        </a>
-        <a href="https://github.com/codebyramu" target="_blank" rel="noopener noreferrer" class="social-icon magnetic" data-cursor="GITHUB" aria-label="GitHub">
-          <i data-lucide="github"></i>
-        </a>
-        <a href="https://twitter.com/codebyramu" target="_blank" rel="noopener noreferrer" class="social-icon magnetic" data-cursor="TWITTER" aria-label="X / Twitter">
-          <i data-lucide="twitter"></i>
-        </a>
+    <div class="hero-top">
+      <div class="eyebrow mono">CREATIVE DEVELOPER / CHENNAI, IN</div>
+      <p>Building digital experiences where engineering meets imagination.</p>
+    </div>
+
+    <h1 class="hero-title" aria-label="RAMU">
+      <span>RAMU</span><span style="color:var(--red)">®</span>
+    </h1>
+
+    <div class="hero-bottom">
+      <p><strong>Code. Music. Craft.</strong><br>Ideas made interactive.</p>
+      <div class="hero-actions">
+        <!-- Audio Trigger Button for Hero Video -->
+        <button class="audio-btn mono" id="heroAudioBtn" aria-label="Toggle Sound">
+          <i data-lucide="volume-x" id="heroAudioIcon"></i>
+          <span id="heroAudioText">SOUND OFF</span>
+        </button>
+        <div class="scroll-cue mono">
+          <span class="scroll-line"></span> SCROLL TO EXPLORE
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Sticky Hero & Scroll-Scrubbed Video Section -->
-  <section class="hero-pinned-wrapper" id="hero">
-    <div class="hero-sticky-stage" id="heroStickyStage">
-      <!-- Background Ambient Canvas Glow -->
-      <canvas id="heroAmbientCanvas" class="hero-ambient-canvas"></canvas>
-
-      <!-- Video Presentation Container -->
-      <div class="video-container" id="videoContainer">
-        <video 
-          id="heroVideo" 
-          class="hero-video" 
-          src="hero-video.mp4" 
-          poster="hero-poster.jpg" 
-          preload="auto" 
-          playsinline 
-          muted 
-          loop
-        ></video>
-        <div class="video-vignette"></div>
-        <div class="video-speed-lines"></div>
-      </div>
-
-      <!-- Hero Cinematic Overlays -->
-      <div class="hero-content-layer">
-        <!-- Top HUD Metas -->
-        <div class="hero-hud-top">
-          <div class="hud-pill">
-            <span class="pulse-indicator"></span>
-            <span>SYSTEM ACTIVE // CHENNAI, IN</span>
-          </div>
-          <div class="hud-pill">
-            <i data-lucide="cpu" class="hud-icon"></i>
-            <span>2ND YEAR B.TECH CSE (AI & ML)</span>
-          </div>
-          <div class="hud-pill highlight">
-            <i data-lucide="sparkles" class="hud-icon"></i>
-            <span>CREATIVE DEV & AI ENGINEER</span>
-          </div>
-        </div>
-
-        <!-- Center Kinetic Typography -->
-        <div class="hero-center-hero">
-          <div class="hero-subtitle-tag" id="heroTag">VIBE CODING & BULLETPROOF ENGINEERING</div>
-          <h1 class="hero-title" id="heroTitle">
-            <span class="title-word title-outline">BUILDING</span>
-            <span class="title-word title-accent">INTELLIGENT</span>
-            <span class="title-word title-bold">EXPERIENCES</span>
-          </h1>
-          <p class="hero-desc" id="heroDesc">
-            Pairing high-performance frontend interfaces with cutting-edge AI systems, audio DSP engines, and gesture-driven AR computing.
-          </p>
-        </div>
-
-        <!-- Bottom Video Controls & Interactive HUD -->
-        <div class="hero-hud-bottom">
-          <div class="video-controls-bar">
-            <!-- Play / Pause -->
-            <button class="btn-ctrl magnetic" id="btnPlayPause" aria-label="Toggle Play/Pause" data-cursor="TOGGLE">
-              <i data-lucide="play" id="playIcon"></i>
-              <span id="playStateText">AUTO SCRUB</span>
-            </button>
-
-            <!-- Sound Toggle -->
-            <button class="btn-ctrl magnetic" id="btnAudioToggle" aria-label="Toggle Audio" data-cursor="AUDIO">
-              <i data-lucide="volume-x" id="volumeIcon"></i>
-              <span id="audioStateText">SOUND OFF</span>
-              <div class="eq-bars" id="eqBars">
-                <span></span><span></span><span></span><span></span>
-              </div>
-            </button>
-
-            <!-- Scrub Progress Indicator -->
-            <div class="scrub-status">
-              <span class="scrub-label">CINEMATIC SYNC</span>
-              <div class="scrub-bar-track">
-                <div class="scrub-bar-fill" id="scrubFill"></div>
-              </div>
-              <span class="scrub-time" id="scrubTime">00:00 / 00:22</span>
-            </div>
-
-            <!-- Scroll indicator -->
-            <div class="scroll-helper">
-              <span>SCROLL TO DRIFT</span>
-              <i data-lucide="chevron-down" class="bounce-anim"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Finale RAMU Overlay Tag (reveals dynamically as video finishes) -->
-      <div class="ramu-reveal-watermark" id="ramuWatermark">
-        <span class="watermark-tag">RAMU // CREATIVE FORCE</span>
-      </div>
+  <!-- Marquee Ticker -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>DESIGN WITH INTENT <b>✳</b> BUILD WITH CURIOSITY <b>✳</b> CODE. MUSIC. CRAFT. <b>✳</b> LESS NOISE. MORE INTENTION <b>✳</b> DESIGN WITH INTENT <b>✳</b> BUILD WITH CURIOSITY <b>✳</b> CODE. MUSIC. CRAFT. <b>✳</b> LESS NOISE. MORE INTENTION <b>✳</b></span>
+      <span>DESIGN WITH INTENT <b>✳</b> BUILD WITH CURIOSITY <b>✳</b> CODE. MUSIC. CRAFT. <b>✳</b> LESS NOISE. MORE INTENTION <b>✳</b> DESIGN WITH INTENT <b>✳</b> BUILD WITH CURIOSITY <b>✳</b> CODE. MUSIC. CRAFT. <b>✳</b> LESS NOISE. MORE INTENTION <b>✳</b></span>
     </div>
-  </section>
+  </div>
 
-  <!-- Identity / Bento Grid Overview -->
-  <section class="section-container" id="about">
-    <div class="section-header">
-      <div class="section-tag">
-        <i data-lucide="fingerprint" class="tag-icon"></i>
-        <span>01 // IDENTITY MATRIX</span>
-      </div>
-      <h2 class="section-title">ENGINEERED AT THE INTERSECTION OF CODE, AI & SOUND</h2>
-      <p class="section-sub">
-        I am Ramu (<a href="https://github.com/codebyramu" target="_blank" class="inline-link">@codebyramu</a>), a 19-year-old creative technologist and AI/ML engineer based in Chennai. Currently pursuing B.Tech CSE (AI & ML) at VISTAS Chennai and interning at ConnectNBuild.
+  <!-- 001 / The Mindset & Story -->
+  <section class="intro" id="about">
+    <div>
+      <p class="mono section-label">001 / THE MINDSET</p>
+      <p class="mono">ABOUT RAMU</p>
+    </div>
+    <div>
+      <h2 class="reveal">I don't memorize.<br><em>I understand.</em></h2>
+      <p class="intro-copy reveal">
+        I'm Ramu (<a href="https://github.com/codebyramu" target="_blank" class="text-link">@codebyramu</a>), a 19-year-old CSE student specializing in AI & Machine Learning at VISTAS, Chennai, and currently interning at ConnectNBuild. I like breaking hard problems down, experimenting with ideas, and building software that feels as good as it works.
       </p>
-    </div>
-
-    <!-- Bento Grid -->
-    <div class="bento-grid">
-      <!-- Bento Item 1: High-Speed Sprinting & Focus -->
-      <div class="bento-card bento-card-wide card-hover" data-cursor="ENERGY">
-        <div class="bento-glow"></div>
-        <div class="bento-badge">DISCIPLINE & SPEED</div>
-        <div class="bento-content">
-          <div class="bento-icon-wrapper">
-            <i data-lucide="zap" class="bento-icon"></i>
-          </div>
-          <h3 class="bento-heading">Velocity in Code & Athletics</h3>
-          <p class="bento-text">
-            Competitive sprinter (100m, 200m, 800m), classical Carnatic violinist, and avid chess player. I bring the same laser focus, rhythm, and split-second precision to building low-latency software architecture.
-          </p>
-          <div class="stats-row">
-            <div class="stat-box">
-              <div class="stat-val">100m</div>
-              <div class="stat-lbl">Sprint Focus</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-val">1-3s</div>
-              <div class="stat-lbl">AI Agent Latency</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-val">10+</div>
-              <div class="stat-lbl">Shipped Builds</div>
-            </div>
-          </div>
+      <p class="intro-copy reveal" style="margin-top:1.25rem;">
+        From real-time voice-to-MIDI algorithms and gesture-controlled spatial AR to government hackathon platforms and cinematic scroll experiences, I care about the logic behind the code — and the rhythm people feel.
+      </p>
+      <div class="identity-stats reveal">
+        <div class="id-stat">
+          <span class="id-stat-num">100m</span>
+          <span class="id-stat-lbl mono">Sprint Focus</span>
         </div>
-      </div>
-
-      <!-- Bento Item 2: ConnectNBuild Internship -->
-      <div class="bento-card card-hover" data-cursor="INTERN">
-        <div class="bento-glow"></div>
-        <div class="bento-badge">INDUSTRY IMPACT</div>
-        <div class="bento-content">
-          <div class="bento-icon-wrapper">
-            <i data-lucide="briefcase" class="bento-icon"></i>
-          </div>
-          <h3 class="bento-heading">ConnectNBuild Intern</h3>
-          <p class="bento-text">
-            Frontend Developer & UI/UX specialist. Built the responsive customer/user module, engineered the animated mascot <strong>"Bolt"</strong> login experience, and architected the Project A leaderboard on Supabase.
-          </p>
-          <div class="tag-list">
-            <span class="tech-tag">Next.js</span>
-            <span class="tech-tag">Supabase</span>
-            <span class="tech-tag">UI/UX</span>
-          </div>
+        <div class="id-stat">
+          <span class="id-stat-num">1-3s</span>
+          <span class="id-stat-lbl mono">AI Agent Latency</span>
         </div>
-      </div>
-
-      <!-- Bento Item 3: Smart India Hackathon 2026 -->
-      <div class="bento-card card-hover" data-cursor="SIH 2026">
-        <div class="bento-glow"></div>
-        <div class="bento-badge">NATIONAL HACKATHON</div>
-        <div class="bento-content">
-          <div class="bento-icon-wrapper">
-            <i data-lucide="award" class="bento-icon"></i>
-          </div>
-          <h3 class="bento-heading">SIH 2026 for MoSPI</h3>
-          <p class="bento-text">
-            Architected the National Learning Portal for India's Ministry of Statistics & Programme Implementation (MoSPI). Implemented AI competency gap discovery, FAISS vector embeddings, and iGOT Karmayogi course mapping.
-          </p>
-          <div class="tag-list">
-            <span class="tech-tag">FAISS</span>
-            <span class="tech-tag">Gemini Flash</span>
-            <span class="tech-tag">FastAPI</span>
-          </div>
+        <div class="id-stat">
+          <span class="id-stat-num">SIH '26</span>
+          <span class="id-stat-lbl mono">MoSPI Platform</span>
         </div>
-      </div>
-
-      <!-- Bento Item 4: Algorithms & LeetCode Grind -->
-      <div class="bento-card card-hover" data-cursor="ALGO">
-        <div class="bento-glow"></div>
-        <div class="bento-badge">ALGORITHMIC RIGOR</div>
-        <div class="bento-content">
-          <div class="bento-icon-wrapper">
-            <i data-lucide="terminal" class="bento-icon"></i>
-          </div>
-          <h3 class="bento-heading">16-Week DSA Grind</h3>
-          <p class="bento-text">
-            Rigorous problem solving in C/C++ and Python covering core data structures, graph theory, dynamic programming, and binary search. Publicly cataloged on GitHub (<a href="https://github.com/codebyramu/My--DSA--" target="_blank" class="inline-link">My--DSA--</a>).
-          </p>
-          <div class="tag-list">
-            <span class="tech-tag">C / C++</span>
-            <span class="tech-tag">LeetCode</span>
-            <span class="tech-tag">Data Structures</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bento Item 5: Project A Mentorship -->
-      <div class="bento-card card-hover" data-cursor="COMMUNITY">
-        <div class="bento-glow"></div>
-        <div class="bento-badge">COMMUNITY LEADERSHIP</div>
-        <div class="bento-content">
-          <div class="bento-icon-wrapper">
-            <i data-lucide="users" class="bento-icon"></i>
-          </div>
-          <h3 class="bento-heading">Project A: Build with Ambition</h3>
-          <p class="bento-text">
-            Launched an 8-mentor peer initiative teaching practical Python programming and algorithmic thinking to 60+ engineering classmates at VISTAS.
-          </p>
-          <div class="tag-list">
-            <span class="tech-tag">Mentorship</span>
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">Leadership</span>
-          </div>
+        <div class="id-stat">
+          <span class="id-stat-num">16 Wks</span>
+          <span class="id-stat-lbl mono">DSA Grind</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Projects Showcase Section -->
-  <section class="section-container" id="projects">
-    <div class="section-header">
-      <div class="section-tag">
-        <i data-lucide="code-2" class="tag-icon"></i>
-        <span>02 // SELECTED WORKS</span>
-      </div>
-      <h2 class="section-title">CURATED ENGINEERING PORTFOLIO</h2>
-      <p class="section-sub">
-        Production applications, experimental audio DSP tools, AI agent architectures, and creative web platforms.
-      </p>
-
-      <!-- Filter Controls -->
-      <div class="project-filter-tabs">
-        <button class="filter-btn active" data-filter="all">All Projects (9)</button>
-        <button class="filter-btn" data-filter="ai">AI & Machine Learning</button>
-        <button class="filter-btn" data-filter="audio">Audio DSP & Games</button>
-        <button class="filter-btn" data-filter="web">Creative Web</button>
-      </div>
-    </div>
-
-    <!-- Projects Grid -->
-    <div class="projects-grid" id="projectsGrid">
+  <!-- 002 / Ultra-Smooth Scroll-Driven Film Sequence (Canvas + 395 WebP Frames) -->
+  <section class="scroll-film" id="film" aria-label="Scroll-controlled cinematic car video">
+    <div class="film-sticky">
+      <!-- High-performance canvas powered by pre-rendered WebP frames -->
+      <canvas class="film-canvas" id="filmCanvas" aria-label="Cinematic car animation"></canvas>
       
-      <!-- Project 1: Ramu-AI -->
-      <article class="project-card" data-category="ai" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">Autonomous AI System</div>
-          <div class="project-badge accent-red">FLAGSHIP</div>
+      <!-- Film Overlays -->
+      <div class="film-overlay">
+        <div>
+          <p class="mono">SCROLL SEQUENCE / 002</p>
+          <h2 class="film-heading" id="filmHeading">MOTION<br>WITH <span>INTENT.</span></h2>
         </div>
-        <div class="project-visual">
-          <div class="project-terminal-preview">
-            <div class="term-bar">
-              <span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span>
-              <span class="t-title">ramu-ai // voice-ar-bridge</span>
+        <div class="film-foot">
+          <p id="filmCaption">Move through the sequence.<br>The scene follows your scroll.</p>
+          <div class="progress-wrap">
+            <div class="progress-meta mono">
+              <span>FRAME SEQUENCE</span>
+              <span id="progressText">00%</span>
             </div>
-            <div class="term-code">
-              <span class="text-green">$ ramu --start-bridge</span><br />
-              <span class="text-muted">> Loading user context: codebyramu...</span><br />
-              <span class="text-accent">> Barehands AR initialized at 127.0.0.1:8794</span><br />
-              <span class="text-blue">> Gemini Flash 2.0 connected [Latency: 1.2s]</span><br />
-              <span class="text-white">> Listening for speech input...</span>
+            <div class="progress-rail">
+              <div class="progress-fill" id="progressFill"></div>
             </div>
           </div>
         </div>
-        <div class="project-body">
-          <h3 class="project-name">Ramu-AI: Voice & AR Bridge</h3>
-          <p class="project-desc">
-            Personal solo terminal assistant combining Gemini API, Microsoft neural voice via edge-tts, and barehands gesture-controlled spatial AR. Executes system bash actions, autonomously opens browser contexts, and projects code into 3D space.
-          </p>
-          <div class="project-tech">
-            <span>Python</span><span>Gemini API</span><span>edge-tts</span><span>Barehands AR</span><span>Bash Tools</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">Solo Terminal Architecture</span>
-            <div class="project-links">
-              <span class="project-status-pill">Active Build</span>
-            </div>
-          </div>
-        </div>
-      </article>
+      </div>
+    </div>
+  </section>
 
-      <!-- Project 2: Vadivelu AI Agent -->
-      <article class="project-card" data-category="ai" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">Comedy Semantic Agent</div>
-          <div class="project-badge">AI AGENT</div>
-        </div>
-        <div class="project-visual">
-          <div class="project-art-preview vadivelu-bg">
-            <div class="pipeline-flow">
-              <div class="pipeline-step">INTENT</div>
-              <div class="pipeline-arrow">&rarr;</div>
-              <div class="pipeline-step">RETRIEVAL</div>
-              <div class="pipeline-arrow">&rarr;</div>
-              <div class="pipeline-step">SELECTOR</div>
-              <div class="pipeline-arrow">&rarr;</div>
-              <div class="pipeline-step">CONVERSATION</div>
-            </div>
-          </div>
-        </div>
-        <div class="project-body">
-          <h3 class="project-name">Vadivelu AI Agent</h3>
-          <p class="project-desc">
-            Tamil comedy reaction AI powered by a 4-step pipeline: Intent Parsing &rarr; Supabase pgvector Dialogue Retrieval &rarr; Selector &rarr; Gemini 2.0 Flash Generation. Features liquid-glassmorphism responsive interface.
-          </p>
-          <div class="project-tech">
-            <span>Gemini 2.0 Flash</span><span>Supabase pgvector</span><span>TypeScript</span><span>FastAPI</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">Local /vadiveluAI</span>
-            <div class="project-links">
-              <span class="project-status-pill">Full Stack</span>
-            </div>
-          </div>
-        </div>
-      </article>
+  <!-- 003 / Selected Works -->
+  <section class="work" id="work">
+    <div class="work-head">
+      <div>
+        <p class="mono section-label">003 / SELECTED WORK</p>
+        <h2>Curiosity<br>in motion.</h2>
+      </div>
+      <p class="mono">A FEW THINGS I'M BUILDING ↘</p>
+    </div>
 
-      <!-- Project 3: VOCARA / HumRoll / Dubler 2 Remake -->
-      <article class="project-card" data-category="audio" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">Audio DSP & Neural Pitch</div>
-          <div class="project-badge">VOICE TO MIDI</div>
+    <div class="work-grid">
+      <!-- Project 1: VOCARA / HumRoll / TuneMateV2 -->
+      <a class="project reveal" href="https://github.com/codebyramu" target="_blank" rel="noreferrer">
+        <div class="project-number mono">
+          <span>01 / MUSIC DSP + AI</span>
+          <span>↗</span>
         </div>
-        <div class="project-visual">
-          <div class="project-art-preview audio-bg">
-            <div class="audio-wave-anim">
-              <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-            </div>
-            <div class="audio-tag-overlay">CREPE Neural Tracking + Silero VAD</div>
-          </div>
+        <div>
+          <h3>VOCARA & HumRoll</h3>
+          <p>Real-time voice-to-MIDI studio with CREPE neural pitch detection, Silero VAD, and custom tuning for intricate Carnatic violin notes and beatboxing.</p>
+          <div class="p-tags mono"><span>CREPE</span><span>Silero VAD</span><span>Web Audio</span><span>Rust/Tauri</span></div>
         </div>
-        <div class="project-body">
-          <h3 class="project-name">VOCARA / HumRoll Studio</h3>
-          <p class="project-desc">
-            Voice-to-MIDI studio enabling musicians to hum melodies and beatbox drums into real-time MIDI notes. Tuned with Silero VAD and CREPE pitch detection, custom-engineered for intricate Carnatic musical scales and live DAW routing.
-          </p>
-          <div class="project-tech">
-            <span>Web Audio API</span><span>CREPE</span><span>Silero VAD</span><span>Rust / Tauri 2</span><span>LMMS</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">Co-built with Vimal</span>
-            <div class="project-links">
-              <span class="project-status-pill">Audio Engine</span>
-            </div>
-          </div>
+        <span class="arrow">↗</span>
+      </a>
+
+      <!-- Project 2: Ramu-AI: Voice & AR Bridge -->
+      <a class="project reveal" href="https://github.com/codebyramu" target="_blank" rel="noreferrer">
+        <div class="project-number mono">
+          <span>02 / AUTONOMOUS SYSTEMS</span>
+          <span>↗</span>
         </div>
-      </article>
+        <div>
+          <h3>Ramu-AI (Voice & AR)</h3>
+          <p>Personal solo terminal assistant combining Gemini API, Microsoft neural voice via edge-tts, and barehands gesture-controlled spatial AR stage.</p>
+          <div class="p-tags mono"><span>Gemini API</span><span>edge-tts</span><span>Barehands AR</span><span>Bash Tools</span></div>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
+
+      <!-- Project 3: Vadivelu AI Agent -->
+      <a class="project reveal" href="https://github.com/codebyramu" target="_blank" rel="noreferrer">
+        <div class="project-number mono">
+          <span>03 / SEMANTIC AI AGENT</span>
+          <span>↗</span>
+        </div>
+        <div>
+          <h3>Vadivelu AI Agent</h3>
+          <p>Tamil comedy reaction engine powered by a 4-step pipeline: Intent Parsing &rarr; Supabase pgvector Dialogue Retrieval &rarr; Selector &rarr; Gemini 2.0 Flash.</p>
+          <div class="p-tags mono"><span>Gemini 2.0 Flash</span><span>Supabase pgvector</span><span>TypeScript</span></div>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
 
       <!-- Project 4: National Learning Portal (SIH 2026) -->
-      <article class="project-card" data-category="ai" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">Government AI Infrastructure</div>
-          <div class="project-badge">SIH 2026</div>
+      <a class="project reveal" href="https://github.com/codebyramu" target="_blank" rel="noreferrer">
+        <div class="project-number mono">
+          <span>04 / NATIONAL PLATFORM</span>
+          <span>↗</span>
         </div>
-        <div class="project-visual">
-          <div class="project-art-preview portal-bg">
-            <div class="metric-hud">
-              <div class="hud-stat">
-                <span class="hud-num">100%</span>
-                <span class="hud-txt">MoSPI Competencies</span>
-              </div>
-              <div class="hud-stat">
-                <span class="hud-num">FAISS</span>
-                <span class="hud-txt">Vector Search</span>
-              </div>
-            </div>
-          </div>
+        <div>
+          <h3>SIH '26 MoSPI Portal</h3>
+          <p>AI competency gap discovery, FAISS vector embeddings, and iGOT Karmayogi course recommendations for the Ministry of Statistics & Programme Implementation.</p>
+          <div class="p-tags mono"><span>Next.js 14</span><span>FastAPI</span><span>FAISS</span><span>Google Gemini</span></div>
         </div>
-        <div class="project-body">
-          <h3 class="project-name">National Learning Portal</h3>
-          <p class="project-desc">
-            National platform for the Ministry of Statistics & Programme Implementation (MoSPI). Identifies competency gaps, delivers automated course recommendations via FAISS & Gemini mapped to iGOT Karmayogi, and converts PDF manuals into instant MCQs.
-          </p>
-          <div class="project-tech">
-            <span>Next.js 14</span><span>FastAPI</span><span>FAISS</span><span>Google Gemini</span><span>NetworkX</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">Smart India Hackathon</span>
-            <div class="project-links">
-              <span class="project-status-pill">Enterprise AI</span>
-            </div>
-          </div>
-        </div>
-      </article>
+        <span class="arrow">↗</span>
+      </a>
 
-      <!-- Project 5: Bhaskararajapuram Temple Website -->
-      <article class="project-card" data-category="web" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">Digital Heritage Experience</div>
-          <div class="project-badge">VERCEL PROD</div>
+      <!-- Project 5: Bhaskararajapuram Temple Site -->
+      <a class="project reveal" href="https://temple-111.vercel.app/" target="_blank" rel="noreferrer">
+        <div class="project-number mono">
+          <span>05 / DIGITAL HERITAGE</span>
+          <span>↗</span>
         </div>
-        <div class="project-visual">
-          <div class="project-art-preview temple-bg">
-            <div class="visual-badge">Scroll-Driven Cinematic</div>
-          </div>
+        <div>
+          <h3>Temple Website</h3>
+          <p>Production cultural heritage preservation site featuring rich scroll-driven cinematography, glassmorphic cards, and Lenis physics live on Vercel.</p>
+          <div class="p-tags mono"><span>Next.js 15</span><span>Tailwind</span><span>GSAP</span><span>Lenis</span></div>
         </div>
-        <div class="project-body">
-          <h3 class="project-name">Bhaskararajapuram Temple Site</h3>
-          <p class="project-desc">
-            Production cultural preservation site featuring rich scroll-driven cinematography, glassmorphic cards, Lenis physics, and Google Veo 3 visual prompts. Deployed live on Vercel.
-          </p>
-          <div class="project-tech">
-            <span>Next.js 15</span><span>Tailwind CSS</span><span>GSAP</span><span>Framer Motion</span><span>Lenis</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">Live on Vercel</span>
-            <div class="project-links">
-              <a href="https://github.com/codebyramu/temple_1" target="_blank" class="card-action-btn">Repo &rarr;</a>
-            </div>
-          </div>
-        </div>
-      </article>
+        <span class="arrow">↗</span>
+      </a>
 
-      <!-- Project 6: HyperCade -->
-      <article class="project-card" data-category="audio" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">Realtime Multiplayer Engine</div>
-          <div class="project-badge">GAMING</div>
+      <!-- Project 6: HyperCade Party Platform -->
+      <a class="project reveal" href="https://github.com/codebyramu" target="_blank" rel="noreferrer">
+        <div class="project-number mono">
+          <span>06 / MULTIPLAYER ENGINE</span>
+          <span>↗</span>
         </div>
-        <div class="project-visual">
-          <div class="project-art-preview hypercade-bg">
-            <div class="arcade-title">HYPERCADE</div>
-            <div class="arcade-sub">TV HOST + PHONE CONTROLLER</div>
-          </div>
+        <div>
+          <h3>HyperCade Party Games</h3>
+          <p>Zero-install browser multiplayer platform. The living room TV acts as host canvas while players scan a QR code to use their phones as wireless gamepads.</p>
+          <div class="p-tags mono"><span>WebSockets</span><span>HTML5 Canvas</span><span>DeviceOrientation</span></div>
         </div>
-        <div class="project-body">
-          <h3 class="project-name">HyperCade Party Platform</h3>
-          <p class="project-desc">
-            Zero-install browser multiplayer platform. The living room TV acts as the host canvas while players scan a QR code to turn their smartphones into low-latency gamepads. Includes Neon Relay, Void Tag, and spectator modes.
-          </p>
-          <div class="project-tech">
-            <span>WebSockets</span><span>HTML5 Canvas</span><span>DeviceOrientation</span><span>Node.js</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">Party Game Engine</span>
-            <div class="project-links">
-              <span class="project-status-pill">Realtime</span>
-            </div>
-          </div>
-        </div>
-      </article>
+        <span class="arrow">↗</span>
+      </a>
 
-      <!-- Project 7: Amrutsatvik Foods -->
-      <article class="project-card" data-category="web" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">E-Commerce Experience</div>
-          <div class="project-badge">VERCEL PROD</div>
+      <!-- Project 7: Trainable Small Language Model -->
+      <a class="project reveal" href="https://github.com/codebyramu" target="_blank" rel="noreferrer">
+        <div class="project-number mono">
+          <span>07 / NEURAL ARCHITECTURE</span>
+          <span>↗</span>
         </div>
-        <div class="project-visual">
-          <div class="project-art-preview ecom-bg">
-            <div class="ecom-badge">21 ORGANIC PRODUCTS</div>
-          </div>
+        <div>
+          <h3>Custom ~1M Neural SLM</h3>
+          <p>Trainable neural language model created from scratch in PyTorch with custom self-attention blocks and token-by-token generation for Python syntax.</p>
+          <div class="p-tags mono"><span>PyTorch</span><span>Python</span><span>Transformers</span><span>CUDA</span></div>
         </div>
-        <div class="project-body">
-          <h3 class="project-name">Amrutsatvik Foods v2</h3>
-          <p class="project-desc">
-            Modern organic e-commerce storefront with 21 products, dynamic letter-by-letter 3D cursor gravity reaction in the hero section, and Veo cinematic visual storytelling.
-          </p>
-          <div class="project-tech">
-            <span>React</span><span>Tailwind CSS</span><span>GSAP</span><span>Vercel</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">amrutsatvikfoodsv2.vercel.app</span>
-            <div class="project-links">
-              <a href="https://amrutsatvikfoodsv2.vercel.app" target="_blank" class="card-action-btn">Live App &rarr;</a>
-            </div>
-          </div>
-        </div>
-      </article>
+        <span class="arrow">↗</span>
+      </a>
 
-      <!-- Project 8: Trainable Small Language Model -->
-      <article class="project-card" data-category="ai" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">Deep Learning From Scratch</div>
-          <div class="project-badge">NEURAL ARCH</div>
+      <!-- Project 8: Amrutsatvik Foods v2 -->
+      <a class="project reveal" href="https://amrutsatvikfoodsv2.vercel.app" target="_blank" rel="noreferrer">
+        <div class="project-number mono">
+          <span>08 / E-COMMERCE CRAFT</span>
+          <span>↗</span>
         </div>
-        <div class="project-visual">
-          <div class="project-art-preview slm-bg">
-            <div class="slm-matrix">~1,000,000 PARAMETERS</div>
-          </div>
+        <div>
+          <h3>Amrutsatvik Foods</h3>
+          <p>Modern organic storefront with 21 products and interactive per-letter 3D cursor reaction in the hero section.</p>
+          <div class="p-tags mono"><span>React</span><span>Tailwind</span><span>GSAP</span><span>Vercel</span></div>
         </div>
-        <div class="project-body">
-          <h3 class="project-name">Custom ~1M Neural SLM</h3>
-          <p class="project-desc">
-            Genuine trainable small language model created from the ground up using PyTorch — not an API wrapper. Features custom self-attention blocks, byte-pair tokenizer, and token-by-token generation for Python syntax understanding.
-          </p>
-          <div class="project-tech">
-            <span>PyTorch</span><span>Python</span><span>Transformer Architecture</span><span>CUDA</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">Neural Research</span>
-            <div class="project-links">
-              <span class="project-status-pill">Active Train</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Project 9: splitsec Typing Speed Test -->
-      <article class="project-card" data-category="web" data-cursor="VIEW">
-        <div class="project-header">
-          <div class="project-type-tag">Speed & Precision Tool</div>
-          <div class="project-badge">UTILITY</div>
-        </div>
-        <div class="project-visual">
-          <div class="project-art-preview splitsec-bg">
-            <div class="wpm-display">124 <span class="wpm-lbl">WPM</span></div>
-          </div>
-        </div>
-        <div class="project-body">
-          <h3 class="project-name">splitsec: Typing Speed Test</h3>
-          <p class="project-desc">
-            Minimalist dark obsidian and warm gold typing utility with real-time WPM calculation, keystroke latency diagnostics, and three competitive difficulty tiers.
-          </p>
-          <div class="project-tech">
-            <span>JavaScript</span><span>HTML5</span><span>CSS Modules</span><span>Analytics</span>
-          </div>
-          <div class="project-footer">
-            <span class="project-meta">Published Utility</span>
-            <div class="project-links">
-              <span class="project-status-pill">Shipped</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
+        <span class="arrow">↗</span>
+      </a>
     </div>
   </section>
 
-  <!-- Technical Arsenal / Skills Section -->
-  <section class="section-container" id="skills">
-    <div class="section-header">
-      <div class="section-tag">
-        <i data-lucide="layers" class="tag-icon"></i>
-        <span>03 // TECHNICAL ARSENAL</span>
-      </div>
-      <h2 class="section-title">LANGUAGES, FRAMEWORKS & RUNTIMES</h2>
-      <p class="section-sub">
-        Tools and technologies battle-tested across client applications, hackathons, and neural prototypes.
-      </p>
+  <!-- 004 / Toolkit -->
+  <section class="skills" id="skills">
+    <div>
+      <p class="mono section-label">004 / TOOLKIT</p>
+      <h2>Curious by<br>default.</h2>
     </div>
-
-    <div class="skills-grid">
-      <!-- Category 1: Languages -->
-      <div class="skill-category-card">
-        <div class="skill-cat-header">
-          <i data-lucide="code" class="skill-cat-icon"></i>
-          <h3>Core Languages</h3>
-        </div>
-        <div class="skill-pill-list">
-          <div class="skill-pill highlight"><span class="pill-name">Python</span><span class="pill-lvl">Mastery</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">TypeScript</span><span class="pill-lvl">Advanced</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">C / C++</span><span class="pill-lvl">DSA & Audio</span></div>
-          <div class="skill-pill"><span class="pill-name">JavaScript (ES6+)</span><span class="pill-lvl">Native</span></div>
-          <div class="skill-pill"><span class="pill-name">SQL / PostgreSQL</span><span class="pill-lvl">pgvector</span></div>
-          <div class="skill-pill"><span class="pill-name">Rust</span><span class="pill-lvl">Exploring</span></div>
-        </div>
-      </div>
-
-      <!-- Category 2: Frontend & Creative -->
-      <div class="skill-category-card">
-        <div class="skill-cat-header">
-          <i data-lucide="layout" class="skill-cat-icon"></i>
-          <h3>Frontend & Motion</h3>
-        </div>
-        <div class="skill-pill-list">
-          <div class="skill-pill highlight"><span class="pill-name">Next.js 14/15</span><span class="pill-lvl">App Router</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">React</span><span class="pill-lvl">Custom Hooks</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">Tailwind CSS</span><span class="pill-lvl">Fluid UI</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">GSAP + ScrollTrigger</span><span class="pill-lvl">Cinematic</span></div>
-          <div class="skill-pill"><span class="pill-name">Lenis Smooth Scroll</span><span class="pill-lvl">Physics</span></div>
-          <div class="skill-pill"><span class="pill-name">Three.js / WebGL</span><span class="pill-lvl">3D Shaders</span></div>
-          <div class="skill-pill"><span class="pill-name">HTML5 Canvas</span><span class="pill-lvl">60FPS Loops</span></div>
-        </div>
-      </div>
-
-      <!-- Category 3: AI/ML & Backend -->
-      <div class="skill-category-card">
-        <div class="skill-cat-header">
-          <i data-lucide="cpu" class="skill-cat-icon"></i>
-          <h3>AI/ML & Systems</h3>
-        </div>
-        <div class="skill-pill-list">
-          <div class="skill-pill highlight"><span class="pill-name">Google Gemini Flash / Pro</span><span class="pill-lvl">Tool Calling</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">PyTorch</span><span class="pill-lvl">SLM Training</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">FAISS Vector Search</span><span class="pill-lvl">Embeddings</span></div>
-          <div class="skill-pill"><span class="pill-name">FastAPI / Uvicorn</span><span class="pill-lvl">Async APIs</span></div>
-          <div class="skill-pill"><span class="pill-name">Supabase</span><span class="pill-lvl">Auth & DB</span></div>
-          <div class="skill-pill"><span class="pill-name">CREPE & Silero VAD</span><span class="pill-lvl">Audio ML</span></div>
-          <div class="skill-pill"><span class="pill-name">edge-tts</span><span class="pill-lvl">Speech Syn</span></div>
-        </div>
-      </div>
-
-      <!-- Category 4: Tools & Environment -->
-      <div class="skill-category-card">
-        <div class="skill-cat-header">
-          <i data-lucide="settings" class="skill-cat-icon"></i>
-          <h3>Environment & Tooling</h3>
-        </div>
-        <div class="skill-pill-list">
-          <div class="skill-pill highlight"><span class="pill-name">Linux / Arch / Hyprland</span><span class="pill-lvl">Daily Driver</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">Git & GitHub</span><span class="pill-lvl">Version Control</span></div>
-          <div class="skill-pill highlight"><span class="pill-name">Antigravity CLI (AGY)</span><span class="pill-lvl">Vibe Coding</span></div>
-          <div class="skill-pill"><span class="pill-name">VS Code / Neovim</span><span class="pill-lvl">Editor</span></div>
-          <div class="skill-pill"><span class="pill-name">LMMS / Digital Audio</span><span class="pill-lvl">Sound Design</span></div>
-          <div class="skill-pill"><span class="pill-name">Blender</span><span class="pill-lvl">3D Modeling</span></div>
-        </div>
-      </div>
+    <div class="skill-list">
+      <span>Python</span>
+      <span>TypeScript</span>
+      <span>C / C++</span>
+      <span>JavaScript (ES6+)</span>
+      <span>Next.js 14/15</span>
+      <span>React</span>
+      <span>Tailwind CSS</span>
+      <span>PyTorch</span>
+      <span>Google Gemini API</span>
+      <span>FAISS Vector Search</span>
+      <span>Supabase (pgvector)</span>
+      <span>FastAPI</span>
+      <span>GSAP & ScrollTrigger</span>
+      <span>Lenis Smooth Scroll</span>
+      <span>Three.js & WebGL</span>
+      <span>HTML5 Canvas</span>
+      <span>Web Audio API</span>
+      <span>CREPE & Silero VAD</span>
+      <span>edge-tts</span>
+      <span>Linux (Hyprland / Omarchy)</span>
+      <span>Antigravity CLI (AGY)</span>
+      <span>Git & GitHub</span>
+      <span>LMMS Sound Studio</span>
+      <span>Competitive Sprinting</span>
+      <span>Carnatic Violin</span>
     </div>
   </section>
 
-  <!-- Interactive Terminal Section (Easter Egg & Live Simulator) -->
-  <section class="section-container" id="terminal-section">
-    <div class="section-header">
-      <div class="section-tag">
-        <i data-lucide="terminal" class="tag-icon"></i>
-        <span>04 // RAMU-AI TERMINAL</span>
+  <!-- Interactive Terminal Drawer -->
+  <section class="terminal-drawer-section">
+    <div class="terminal-bar">
+      <div class="terminal-bar-left">
+        <span class="dot-sm red"></span>
+        <span class="dot-sm yellow"></span>
+        <span class="dot-sm green"></span>
+        <span class="mono" style="color:var(--muted); font-size:11px; margin-left:8px;">RAMU-AI SHELL v2.8</span>
       </div>
-      <h2 class="section-title">INTERACTIVE DEVELOPER SHELL</h2>
-      <p class="section-sub">
-        Explore my background, trigger easter eggs, or query project architecture in real time using the built-in shell.
-      </p>
+      <div class="terminal-quick-actions">
+        <button class="term-btn mono" data-cmd="whoami">whoami</button>
+        <button class="term-btn mono" data-cmd="projects">projects</button>
+        <button class="term-btn mono" data-cmd="skills">skills</button>
+        <button class="term-btn mono" data-cmd="drift">drift</button>
+        <button class="term-btn mono" data-cmd="clear">clear</button>
+      </div>
     </div>
-
-    <div class="terminal-container">
-      <div class="terminal-chrome">
-        <div class="chrome-dots">
-          <span class="c-dot red"></span>
-          <span class="c-dot yellow"></span>
-          <span class="c-dot green"></span>
-        </div>
-        <div class="chrome-title">ramu@hyperstation: ~/myportfolio (zsh)</div>
-        <div class="chrome-actions">
-          <button class="terminal-quick-btn" data-cmd="help">help</button>
-          <button class="terminal-quick-btn" data-cmd="projects">projects</button>
-          <button class="terminal-quick-btn" data-cmd="whoami">whoami</button>
-          <button class="terminal-quick-btn" data-cmd="drift">drift</button>
-          <button class="terminal-quick-btn" data-cmd="clear">clear</button>
-        </div>
+    <div class="terminal-console" id="terminalConsole">
+      <div class="terminal-log" id="terminalLog">
+        <div class="term-row"><span class="term-prompt">ramu@hyperstation:~$</span> Welcome to RAMU-AI. Type <span style="color:#00ff88">'help'</span> or use the quick buttons above.</div>
       </div>
-
-      <div class="terminal-screen" id="terminalScreen">
-        <div class="terminal-output" id="terminalOutput">
-          <div class="term-line welcome-line">
-            <span class="term-prompt">RAMU-AI v2.8 (x86_64-linux-gnu)</span><br />
-            <span>Type <span class="highlight-text">'help'</span> to see available commands or click the shortcut buttons above.</span>
-          </div>
-        </div>
-        <form class="terminal-input-row" id="terminalForm">
-          <span class="term-indicator">&gt;</span>
-          <input 
-            type="text" 
-            id="terminalInput" 
-            class="terminal-input" 
-            placeholder="Type a command (e.g. 'projects', 'skills', 'whoami', 'drift')..." 
-            autocomplete="off" 
-            spellcheck="false" 
-          />
-        </form>
-      </div>
+      <form class="term-input-line" id="termForm">
+        <span class="term-prompt">&gt;</span>
+        <input type="text" id="termInput" class="term-input" placeholder="Type a command (whoami, projects, drift)..." autocomplete="off" spellcheck="false" />
+      </form>
     </div>
   </section>
 
-  <!-- Contact & Finale Call to Action -->
-  <section class="section-container" id="contact">
-    <div class="contact-card">
-      <div class="contact-glow"></div>
-      <div class="contact-header">
-        <div class="section-tag">
-          <i data-lucide="radio" class="tag-icon"></i>
-          <span>05 // INITIATE LINK</span>
-        </div>
-        <h2 class="contact-title">LET'S BUILD SOMETHING EXTRAORDINARY</h2>
-        <p class="contact-desc">
-          Whether you need a high-impact creative developer, an AI agent architect, or a frontend engineer who cares deeply about design and raw performance — my inbox is open.
-        </p>
-      </div>
-
-      <div class="contact-actions">
-        <!-- Copy Email Button -->
-        <button class="btn-primary magnetic" id="copyEmailBtn" data-cursor="COPY">
-          <i data-lucide="mail"></i>
-          <span id="copyEmailText">codebyramu@gmail.com</span>
+  <!-- 005 / Contact -->
+  <section class="contact" id="contact">
+    <p class="mono">005 / YOUR TURN</p>
+    <h2>Have an idea?<br><span>Let's build.</span></h2>
+    <div class="contact-row">
+      <p>Open to collaborations, high-impact engineering roles, internships, and interesting problems.</p>
+      <div class="contact-buttons">
+        <button class="contact-copy-btn mono" id="copyMailBtn">
+          <i data-lucide="copy" class="icon-sm"></i>
+          <span id="copyMailText">codebyramu@gmail.com</span>
         </button>
-
-        <!-- Download Resume -->
-        <a href="resume.pdf" download="Ramu_Resume.pdf" class="btn-secondary magnetic" data-cursor="GET RESUME">
-          <i data-lucide="download"></i>
-          <span>Download Resume (PDF)</span>
+        <a class="contact-link" href="https://github.com/codebyramu" target="_blank" rel="noreferrer">
+          GITHUB <span>↗</span>
         </a>
-
-        <!-- GitHub -->
-        <a href="https://github.com/codebyramu" target="_blank" rel="noopener noreferrer" class="btn-secondary magnetic" data-cursor="GITHUB">
-          <i data-lucide="github"></i>
-          <span>GitHub</span>
+        <a class="contact-link" href="https://leetcode.com/u/codebyramu" target="_blank" rel="noreferrer">
+          LEETCODE <span>↗</span>
         </a>
-
-        <!-- LeetCode -->
-        <a href="https://leetcode.com/u/codebyramu" target="_blank" rel="noopener noreferrer" class="btn-secondary magnetic" data-cursor="LEETCODE">
-          <i data-lucide="code"></i>
-          <span>LeetCode</span>
+        <a class="contact-link" href="https://twitter.com/codebyramu" target="_blank" rel="noreferrer">
+          X / TWITTER <span>↗</span>
         </a>
-      </div>
-
-      <div class="contact-footer">
-        <div class="footer-left">
-          <span>&copy; 2026 RAMU (codebyramu). All rights reserved.</span>
-        </div>
-        <div class="footer-right">
-          <span>Crafted with GSAP, Lenis & Pure Velocity in Chennai.</span>
-        </div>
       </div>
     </div>
+    <footer class="footer">
+      <span class="mono">RAMU® — CODE. MUSIC. CRAFT.</span>
+      <span class="mono">MADE WITH VELOCITY · © 2026</span>
+      <a class="mono back-to-top" href="#top">BACK TO TOP ↑</a>
+    </footer>
   </section>
 
-  <!-- External Script -->
+  <!-- Main JavaScript File -->
   <script src="main.js"></script>
 </body>
 </html>
