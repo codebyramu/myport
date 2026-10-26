@@ -1,6 +1,6 @@
 /* ==========================================================================
    RAMU® CINEMATIC PORTFOLIO — STYLESHEET
-   Reference: RAMU_Cinematic_Portfolio.html + Hardware Canvas Optimization
+   High-Octane Obsidian + Crimson + Cursor-Reactive Hero Canvas
    ========================================================================== */
 
 :root {
@@ -159,7 +159,9 @@ nav {
   box-shadow: 0 0 12px #b5ff7670;
 }
 
-/* Hero Section */
+/* ==========================================================================
+   HERO SECTION (Cursor-Reactive Canvas from Video Project 29)
+   ========================================================================== */
 .hero {
   min-height: 100svh;
   position: relative;
@@ -176,9 +178,10 @@ nav {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(8, 8, 9, 0.94), rgba(8, 8, 9, 0.1) 70%),
-              linear-gradient(0deg, #080809 0%, transparent 45%);
+  background: linear-gradient(90deg, rgba(8, 8, 9, 0.78) 0%, rgba(8, 8, 9, 0.12) 60%),
+              linear-gradient(0deg, #080809 0%, transparent 40%);
   z-index: -1;
+  pointer-events: none;
 }
 
 .hero-art {
@@ -188,13 +191,18 @@ nav {
   overflow: hidden;
 }
 
-.hero-art video {
+.hero-canvas {
   width: 100%;
   height: 100%;
+  position: absolute;
+  inset: 0;
   object-fit: cover;
-  opacity: 0.78;
-  filter: saturate(1.05) contrast(1.06);
-  transform: scale(1.02);
+  display: block;
+  opacity: 0.94;
+  filter: saturate(1.12) contrast(1.1);
+  transform: scale(1.03);
+  transition: transform 0.12s ease-out;
+  pointer-events: none;
 }
 
 .hero-top {
@@ -282,6 +290,12 @@ h1 {
   background: var(--red);
   border-color: var(--red);
   box-shadow: 0 0 15px rgba(255, 41, 77, 0.4);
+}
+
+.audio-btn.active {
+  background: var(--red);
+  border-color: var(--red);
+  box-shadow: 0 0 20px rgba(255, 41, 77, 0.65);
 }
 
 .scroll-cue {
@@ -403,10 +417,10 @@ h1 {
 }
 
 /* ==========================================================================
-   002 / SCROLL-DRIVEN FILM SEQUENCE (HIGH-PERFORMANCE CANVAS)
+   002 / FULL-BLEED DRIFT SEQUENCE (BIGGER, UNOBSTRUCTED, 1-SCROLL DRIVEN)
    ========================================================================== */
 .scroll-film {
-  height: 350vh; /* Smooth, generous scroll distance */
+  height: 220vh; /* Smooth single scroll trigger distance */
   position: relative;
   background: #080809;
 }
@@ -415,8 +429,9 @@ h1 {
   position: sticky;
   top: 0;
   height: 100svh;
+  width: 100vw;
   overflow: hidden;
-  background: #10070a;
+  background: #080809;
 }
 
 .film-canvas {
@@ -427,69 +442,74 @@ h1 {
   object-fit: cover;
   display: block;
   z-index: 1;
+  cursor: pointer;
 }
 
-.film-overlay {
+/* Minimalist Floating HUD (Text Removed from Center per Image 2) */
+.film-hud-minimal {
   position: absolute;
-  inset: 0;
+  bottom: 35px;
+  right: var(--pad);
+  z-index: 5;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: calc(var(--pad) + 55px) var(--pad) 35px;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 35%, transparent 60%, rgba(0, 0, 0, 0.72));
-  z-index: 2;
-}
-
-.film-heading {
-  font-size: clamp(40px, 8vw, 110px);
-  letter-spacing: -0.08em;
-  line-height: 0.86;
-  margin: 0;
-  max-width: 750px;
-  text-transform: uppercase;
-}
-
-.film-heading span {
-  color: var(--red);
-}
-
-.film-foot {
-  display: flex;
+  gap: 8px;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
+  pointer-events: none;
 }
 
-.film-foot p {
-  max-width: 280px;
-  font-size: 12px;
-  color: #d2cbd0;
-  line-height: 1.6;
+.film-hud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 11, 14, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  color: #d1cdd0;
+  font-size: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.progress-wrap {
-  width: min(220px, 35vw);
+.hud-blink-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red);
+  animation: pulse-red 1.5s infinite ease-in-out;
 }
 
-.progress-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 9px;
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.25); }
 }
 
-.progress-rail {
-  height: 2px;
-  background: rgba(255, 255, 255, 0.25);
+.hud-divider {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.hud-pct {
+  color: #fff;
+  font-weight: 600;
+}
+
+.film-hud-track {
+  width: 180px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
   overflow: hidden;
 }
 
-.progress-fill {
+.film-hud-fill {
   height: 100%;
-  width: 0;
+  width: 0%;
   background: var(--red);
-  box-shadow: 0 0 14px var(--red);
-  transition: width 0.05s ease-out;
+  box-shadow: 0 0 10px var(--red);
+  border-radius: 9999px;
+  transition: width 0.08s ease-out;
 }
 
 /* ==========================================================================
@@ -888,17 +908,9 @@ h1 {
   .identity-stats {
     grid-template-columns: repeat(2, 1fr);
   }
-  .film-overlay {
-    padding-top: 95px;
-  }
-  .film-heading {
-    font-size: clamp(38px, 11vw, 72px);
-  }
-  .film-foot {
-    align-items: flex-end;
-  }
-  .film-foot p {
-    max-width: 190px;
+  .film-hud-minimal {
+    bottom: 20px;
+    right: 20px;
   }
   .work-grid {
     grid-template-columns: 1fr;
