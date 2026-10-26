@@ -224,6 +224,7 @@
   const filmCanvas = document.getElementById('filmCanvas');
   const filmCtx = filmCanvas ? filmCanvas.getContext('2d', { alpha: false, desynchronized: true }) : null;
   const filmSection = document.getElementById('film');
+  const filmHeading = document.getElementById('filmHeading');
   const progressFill = document.getElementById('progressFill');
   const progressText = document.getElementById('progressText');
 
@@ -231,6 +232,7 @@
   const filmImages = new Array(TOTAL_FILM_FRAMES);
   let filmRenderedIndex = -1;
   let filmLastValidImage = null;
+  let currentHeadingText = '';
 
   const filmState = {
     frame: 0,
@@ -303,10 +305,41 @@
     filmCtx.drawImage(targetImg, sx, sy, sw, sh);
   }
 
+  function updateFilmHeading(progressFraction) {
+    if (!filmHeading) return;
+    const targetHTML = progressFraction < 0.52
+      ? 'MOTION<br>WITH <span>INTENT.</span>'
+      : 'STAY<br><span>CURIOUS.</span>';
+
+    if (currentHeadingText !== targetHTML) {
+      currentHeadingText = targetHTML;
+      if (window.gsap) {
+        gsap.to(filmHeading, {
+          opacity: 0,
+          y: -10,
+          duration: 0.18,
+          ease: 'power1.in',
+          onComplete: () => {
+            filmHeading.innerHTML = targetHTML;
+            gsap.to(filmHeading, {
+              opacity: 1,
+              y: 0,
+              duration: 0.28,
+              ease: 'power2.out',
+            });
+          },
+        });
+      } else {
+        filmHeading.innerHTML = targetHTML;
+      }
+    }
+  }
+
   function updateFilmHUD(progressFraction) {
     const pct = Math.max(0, Math.min(100, Math.round(progressFraction * 100)));
     if (progressFill) progressFill.style.width = `${pct}%`;
     if (progressText) progressText.textContent = `${String(pct).padStart(2, '0')}%`;
+    updateFilmHeading(progressFraction);
   }
 
   // Smooth 1-Scroll Playhead Animation
