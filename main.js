@@ -1,7 +1,7 @@
 /**
  * ==========================================================================
  * RAMU® CINEMATIC PORTFOLIO — CORE ENGINE
- * Hardware-Accelerated Canvas Frames, Cursor-Reactive Loops, Lenis & GSAP
+ * Hardware-Accelerated Canvas Scrubbing, Lenis & GSAP ScrollTrigger
  * ==========================================================================
  */
 
@@ -21,12 +21,12 @@
 
   if (typeof Lenis !== 'undefined' && !reducedMotion) {
     lenis = new Lenis({
-      duration: 1.1,
+      duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.6,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.5,
     });
 
     function lenisRaf(time) {
@@ -37,8 +37,9 @@
   }
 
   // ==========================================================================
-  // 3. HERO CANVAS: 44-Frame Interactive Cursor-Reactive Ping-Pong Engine
-  //    (Video Project 29: Continuous 0 -> n -> 0 Loop + Cursor Up/Down Velocity)
+  // 3. HERO CANVAS: 44-Frame Interactive Cursor-Driven Engine
+  //    (NO AUTO-PLAY IDLE LOOP! Plays ONLY when cursor moves)
+  //    Cursor UP -> plays normal (0 -> n); Cursor DOWN -> plays reverse (n -> 0)
   // ==========================================================================
   const heroCanvas = document.getElementById('heroCanvas');
   const heroCtx = heroCanvas ? heroCanvas.getContext('2d', { alpha: false, desynchronized: true }) : null;
@@ -52,9 +53,7 @@
   let heroRenderedIdx = -1;
   let heroCurrentFrame = 0;
   let heroDir = 1; // 1 = forward (0 -> 43), -1 = reverse (43 -> 0)
-  const HERO_IDLE_SPEED = 0.42; // baseline idle speed (~25 FPS ping-pong)
-  let heroSpeed = HERO_IDLE_SPEED;
-  let heroTargetSpeed = HERO_IDLE_SPEED;
+  let heroVelocity = 0; // Starts at 0: ZERO AUTO-PLAY ON IDLE!
   let lastCursorY = null;
   let lastCursorX = null;
   let lastMoveTime = performance.now();
@@ -125,7 +124,7 @@
     heroCtx.drawImage(targetImg, sx, sy, sw, sh);
   }
 
-  // Pointer Movement: Cursor Up -> Normal (0->n), Cursor Down -> Reverse (n->0)
+  // Pointer Movement: Cursor Up -> Normal forward (0->n), Cursor Down -> Reverse (n->0)
   window.addEventListener('pointermove', (e) => {
     const now = performance.now();
     const dt = Math.max(now - lastMoveTime, 8);
@@ -135,24 +134,27 @@
       const deltaY = e.clientY - lastCursorY;
       const speedMagnitude = Math.abs(deltaY) / dt;
 
-      // Cursor moving UP (deltaY < -1.5): play forward / normal
-      if (deltaY < -1.5) {
-        heroDir = 1;
-        const boost = Math.min(speedMagnitude * 0.9, 2.6);
-        heroTargetSpeed = HERO_IDLE_SPEED + boost;
-      }
-      // Cursor moving DOWN (deltaY > 1.5): play downwards / reverse
-      else if (deltaY > 1.5) {
-        heroDir = -1;
-        const boost = Math.min(speedMagnitude * 0.9, 2.6);
-        heroTargetSpeed = HERO_IDLE_SPEED + boost;
+      // Only advance when cursor is actively moving
+      if (Math.abs(deltaY) > 1.2) {
+        // Cursor moving UP (deltaY < 0): forward / normal
+        if (deltaY < 0) {
+          heroDir = 1;
+        }
+        // Cursor moving DOWN (deltaY > 0): reverse / downward
+        else {
+          heroDir = -1;
+        }
+
+        // Add velocity directly from cursor movement
+        const impulse = Math.min(speedMagnitude * 0.5, 1.8);
+        heroVelocity = Math.max(heroVelocity, impulse);
       }
 
       // 3D Parallax tilt effect on the hero canvas
       const normX = (e.clientX / window.innerWidth) - 0.5;
       const normY = (e.clientY / window.innerHeight) - 0.5;
       if (heroCanvas) {
-        heroCanvas.style.transform = `translate3d(${normX * 18}px, ${normY * 12}px, 0) scale(1.04)`;
+        heroCanvas.style.transform = `translate3d(${normX * 16}px, ${normY * 12}px, 0) scale(1.03)`;
       }
     }
 
@@ -160,40 +162,40 @@
     lastCursorX = e.clientX;
   }, { passive: true });
 
-  // Main Hero Ping-Pong RAF Loop
-  function heroPingPongLoop() {
-    // Lerp current speed towards target speed
-    heroSpeed += (heroTargetSpeed - heroSpeed) * 0.14;
-    // Gradually decay target speed back to idle baseline
-    heroTargetSpeed += (HERO_IDLE_SPEED - heroTargetSpeed) * 0.045;
+  // Main Hero RAF: ONLY plays when cursor velocity > 0 (No auto-play on idle!)
+  function heroRAF() {
+    if (heroVelocity > 0.008) {
+      heroCurrentFrame += heroDir * heroVelocity;
 
-    // Advance frame index
-    heroCurrentFrame += heroDir * heroSpeed;
+      // Friction: smoothly slow down when mouse stops moving
+      heroVelocity *= 0.88;
 
-    // Ping-pong at boundaries (0 <-> 43)
-    if (heroCurrentFrame >= HERO_TOTAL - 1) {
-      heroCurrentFrame = HERO_TOTAL - 1;
-      heroDir = -1; // Reverse downwards
-    } else if (heroCurrentFrame <= 0) {
-      heroCurrentFrame = 0;
-      heroDir = 1; // Play normal forward
+      // Ping-pong loop at boundaries (0 <-> 43)
+      if (heroCurrentFrame >= HERO_TOTAL - 1) {
+        heroCurrentFrame = HERO_TOTAL - 1;
+        heroDir = -1;
+      } else if (heroCurrentFrame <= 0) {
+        heroCurrentFrame = 0;
+        heroDir = 1;
+      }
+
+      const frameIdx = Math.round(heroCurrentFrame);
+      if (frameIdx !== heroRenderedIdx) {
+        renderHeroFrame(frameIdx);
+      }
+
+      // Engine audio rev sync
+      if (heroAudio && !heroAudio.paused) {
+        heroAudio.playbackRate = Math.max(0.85, Math.min(1.4, 0.95 + heroVelocity * 0.25));
+      }
+    } else {
+      heroVelocity = 0;
     }
 
-    const frameIdx = Math.round(heroCurrentFrame);
-    if (frameIdx !== heroRenderedIdx) {
-      renderHeroFrame(frameIdx);
-    }
-
-    // Engine audio rev sync
-    if (heroAudio && !heroAudio.paused) {
-      const rev = Math.max(0.85, Math.min(1.45, 0.95 + (heroSpeed - HERO_IDLE_SPEED) * 0.22));
-      heroAudio.playbackRate = rev;
-    }
-
-    requestAnimationFrame(heroPingPongLoop);
+    requestAnimationFrame(heroRAF);
   }
 
-  requestAnimationFrame(heroPingPongLoop);
+  requestAnimationFrame(heroRAF);
 
   // Hero Audio Toggle Button
   if (heroAudioBtn && heroAudio) {
@@ -218,8 +220,8 @@
   }
 
   // ==========================================================================
-  // 4. DRIFT FILM CANVAS: 395-Frame 1-Scroll Cinematic Experience
-  //    (1 Scroll Down -> Plays 0 to 100%, 1 Scroll Up -> Reverses 100% to 0)
+  // 4. DRIFT FILM CANVAS: 395-Frame Silky-Smooth Inertial Scroll Sequence
+  //    (Controlled, majestic, cinematic pacing with zero bugs / Lenis sync)
   // ==========================================================================
   const filmCanvas = document.getElementById('filmCanvas');
   const filmCtx = filmCanvas ? filmCanvas.getContext('2d', { alpha: false, desynchronized: true }) : null;
@@ -233,12 +235,6 @@
   let filmRenderedIndex = -1;
   let filmLastValidImage = null;
   let currentHeadingText = '';
-
-  const filmState = {
-    frame: 0,
-    targetFrame: 0,
-    isPlaying: false,
-  };
 
   // Preload all 395 film frames
   for (let i = 0; i < TOTAL_FILM_FRAMES; i++) {
@@ -316,15 +312,15 @@
       if (window.gsap) {
         gsap.to(filmHeading, {
           opacity: 0,
-          y: -10,
-          duration: 0.18,
+          y: -8,
+          duration: 0.16,
           ease: 'power1.in',
           onComplete: () => {
             filmHeading.innerHTML = targetHTML;
             gsap.to(filmHeading, {
               opacity: 1,
               y: 0,
-              duration: 0.28,
+              duration: 0.26,
               ease: 'power2.out',
             });
           },
@@ -342,106 +338,27 @@
     updateFilmHeading(progressFraction);
   }
 
-  // Smooth 1-Scroll Playhead Animation
-  function playFilmTo(target) {
-    if (filmState.targetFrame === target && filmState.isPlaying) return;
-
-    filmState.targetFrame = target;
-    filmState.isPlaying = true;
-
-    if (window.gsap) {
-      gsap.killTweensOf(filmState);
-      const dist = Math.abs(target - filmState.frame);
-      const duration = Math.max(0.65, (dist / (TOTAL_FILM_FRAMES - 1)) * 2.3);
-
-      gsap.to(filmState, {
-        frame: target,
-        duration: duration,
-        ease: 'power2.out',
-        onUpdate: () => {
-          const idx = Math.min(TOTAL_FILM_FRAMES - 1, Math.max(0, Math.round(filmState.frame)));
-          renderFilmFrame(idx);
-          updateFilmHUD(idx / (TOTAL_FILM_FRAMES - 1));
-        },
-        onComplete: () => {
-          filmState.isPlaying = false;
-          filmState.frame = target;
-          renderFilmFrame(target);
-          updateFilmHUD(target / (TOTAL_FILM_FRAMES - 1));
-        },
-      });
-    } else {
-      filmState.frame = target;
-      renderFilmFrame(target);
-      updateFilmHUD(target / (TOTAL_FILM_FRAMES - 1));
-      filmState.isPlaying = false;
-    }
-  }
-
-  // Wheel Listener for 1-Scroll Trigger
-  window.addEventListener('wheel', (e) => {
-    if (!filmSection) return;
-    const rect = filmSection.getBoundingClientRect();
-    // Active when film section occupies the viewport
-    const inFilm = rect.top <= 120 && rect.bottom >= window.innerHeight - 120;
-    if (!inFilm) return;
-
-    // 1 Scroll DOWN gesture (deltaY > 15)
-    if (e.deltaY > 15) {
-      if (filmState.frame < TOTAL_FILM_FRAMES - 1) {
-        e.preventDefault();
-        playFilmTo(TOTAL_FILM_FRAMES - 1);
-      }
-      // If already at 100% and animation finished, allow natural scroll down to #work!
-    }
-    // 1 Scroll UP gesture (deltaY < -15)
-    else if (e.deltaY < -15) {
-      if (filmState.frame > 0) {
-        e.preventDefault();
-        playFilmTo(0);
-      }
-      // If already at 0% and animation finished, allow natural scroll up to #about!
-    }
-  }, { passive: false });
-
-  // Mobile Touch Swipe Handling
-  let touchStartY = null;
-  window.addEventListener('touchstart', (e) => {
-    if (e.touches.length) touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  window.addEventListener('touchmove', (e) => {
-    if (touchStartY === null || !filmSection) return;
-    const rect = filmSection.getBoundingClientRect();
-    const inFilm = rect.top <= 120 && rect.bottom >= window.innerHeight - 120;
-    if (!inFilm) return;
-
-    const currentY = e.touches[0].clientY;
-    const deltaY = touchStartY - currentY; // positive = swipe up = scroll down
-
-    if (deltaY > 25) {
-      if (filmState.frame < TOTAL_FILM_FRAMES - 1) {
-        e.preventDefault();
-        playFilmTo(TOTAL_FILM_FRAMES - 1);
-        touchStartY = currentY;
-      }
-    } else if (deltaY < -25) {
-      if (filmState.frame > 0) {
-        e.preventDefault();
-        playFilmTo(0);
-        touchStartY = currentY;
-      }
-    }
-  }, { passive: false });
-
-  // Direct Canvas Click to Toggle Forward / Reverse
+  // Smooth click-to-cruise toggle on film canvas for hands-free viewing
+  let isCruising = false;
   if (filmCanvas) {
     filmCanvas.addEventListener('click', () => {
-      if (filmState.frame >= TOTAL_FILM_FRAMES - 1) {
-        playFilmTo(0);
-      } else {
-        playFilmTo(TOTAL_FILM_FRAMES - 1);
+      if (!filmSection || !lenis) return;
+      if (isCruising) {
+        isCruising = false;
+        return;
       }
+      isCruising = true;
+      const currentPct = filmRenderedIndex / (TOTAL_FILM_FRAMES - 1);
+      const targetPct = currentPct >= 0.95 ? 0 : 1;
+      const targetScroll = targetPct === 1
+        ? filmSection.offsetTop + filmSection.offsetHeight - window.innerHeight
+        : filmSection.offsetTop;
+
+      lenis.scrollTo(targetScroll, {
+        duration: 7.0 * Math.abs(targetPct - currentPct),
+        easing: (t) => t,
+        onComplete: () => { isCruising = false; }
+      });
     });
   }
 
@@ -473,20 +390,17 @@
 
     if (reducedMotion) return;
 
-    // Film ScrollTrigger: sync progress if user scrubs scrollbar
+    // Rock-solid, smooth-inertia ScrollTrigger for the Drift Film section
     ScrollTrigger.create({
       trigger: '#film',
       start: 'top top',
       end: 'bottom bottom',
+      scrub: 0.75, // Smooth inertial scrub with no jumping or fighting
       onUpdate: (self) => {
-        // If user is manually dragging scrollbar and no 1-scroll tween is active
-        if (!filmState.isPlaying) {
-          const progress = Math.max(0, Math.min(1, self.progress));
-          const idx = Math.min(TOTAL_FILM_FRAMES - 1, Math.round(progress * (TOTAL_FILM_FRAMES - 1)));
-          filmState.frame = idx;
-          renderFilmFrame(idx);
-          updateFilmHUD(progress);
-        }
+        const progress = Math.max(0, Math.min(1, self.progress));
+        const idx = Math.min(TOTAL_FILM_FRAMES - 1, Math.round(progress * (TOTAL_FILM_FRAMES - 1)));
+        renderFilmFrame(idx);
+        updateFilmHUD(progress);
       },
     });
 
@@ -557,7 +471,7 @@ Available commands:
   • <span style="color:var(--red)">whoami</span>   - Identity, college, background
   • <span style="color:var(--red)">projects</span> - Core projects breakdown
   • <span style="color:var(--red)">skills</span>   - Technical stack & tools
-  • <span style="color:var(--red)">drift</span>    - Trigger the cinematic car sequence
+  • <span style="color:var(--red)">drift</span>    - Scroll immediately to the cinematic car sequence
   • <span style="color:var(--red)">contact</span>  - Email & social links
   • <span style="color:var(--red)">clear</span>    - Clear terminal output
 `,
@@ -589,9 +503,6 @@ TOOLKIT ARSENAL:
       const film = document.getElementById('film');
       if (film) {
         film.scrollIntoView({ behavior: 'smooth' });
-        setTimeout(() => {
-          playFilmTo(TOTAL_FILM_FRAMES - 1);
-        }, 600);
       }
       return `> Navigating to Cinematic Frame Sequence... Nitrous engaged.`;
     },

@@ -81,15 +81,20 @@ button {
 
 /* Navigation */
 nav {
-  position: absolute;
-  z-index: 30;
+  position: fixed;
+  z-index: 50;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 25px var(--pad);
+  padding: 18px var(--pad);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: rgba(8, 8, 9, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.45);
 }
 
 .brand {
@@ -168,18 +173,18 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 120px var(--pad) 46px;
+  padding: 135px var(--pad) 46px;
   isolation: isolate;
   overflow: hidden;
-  background: radial-gradient(ellipse at 70% 40%, #301018 0%, #120b10 30%, #080809 70%);
+  background: radial-gradient(ellipse at 70% 40%, #2e0f18 0%, #120b10 35%, #080809 75%);
 }
 
 .hero:before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(8, 8, 9, 0.78) 0%, rgba(8, 8, 9, 0.12) 60%),
-              linear-gradient(0deg, #080809 0%, transparent 40%);
+  background: linear-gradient(90deg, rgba(8, 8, 9, 0.86) 0%, rgba(8, 8, 9, 0.28) 55%, rgba(8, 8, 9, 0.08) 80%),
+              linear-gradient(0deg, #080809 0%, transparent 42%);
   z-index: -1;
   pointer-events: none;
 }
@@ -387,16 +392,27 @@ h1 {
 .identity-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 14px;
   margin-top: 40px;
   padding-top: 30px;
-  border-top: 1px solid var(--line);
-  max-width: 580px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 620px;
 }
 
 .id-stat {
   display: flex;
   flex-direction: column;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.id-stat:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 41, 77, 0.35);
+  transform: translateY(-2px);
 }
 
 .id-stat-num {
@@ -420,7 +436,7 @@ h1 {
    002 / FULL-BLEED DRIFT SEQUENCE (BIGGER, UNOBSTRUCTED, 1-SCROLL DRIVEN)
    ========================================================================== */
 .scroll-film {
-  height: 220vh; /* Smooth single scroll trigger distance */
+  height: 320vh; /* Controlled, natural, cinematic scroll pacing */
   position: relative;
   background: #080809;
 }
@@ -584,20 +600,24 @@ h1 {
 .project {
   min-height: 310px;
   position: relative;
-  padding: 28px;
-  border: 1px solid var(--line);
-  background: linear-gradient(145deg, #171417, #0c0b0d);
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(26, 23, 28, 0.85), rgba(12, 11, 14, 0.95));
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: border-color 0.3s, transform 0.4s;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .project:hover {
-  border-color: rgba(255, 41, 77, 0.5);
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 41, 77, 0.55);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 41, 77, 0.15);
 }
 
 .project:nth-child(2),
@@ -683,20 +703,22 @@ h1 {
 }
 
 .skill-list span {
-  border: 1px solid var(--line);
-  border-radius: 99px;
-  padding: 12px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 9999px;
+  padding: 10px 18px;
   font-size: 12px;
   color: #d5d0d5;
-  transition: all 0.25s;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: default;
 }
 
 .skill-list span:hover {
-  background: var(--red);
+  background: rgba(255, 41, 77, 0.15);
   border-color: var(--red);
   color: white;
-  box-shadow: 0 0 15px rgba(255, 41, 77, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 41, 77, 0.35);
 }
 
 /* ==========================================================================
@@ -710,31 +732,32 @@ h1 {
 
 .terminal-bar {
   background: #111216;
-  border: 1px solid var(--line);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .terminal-bar-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .dot-sm {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
 }
-.dot-sm.red { background: #ff5f56; }
-.dot-sm.yellow { background: #ffbd2e; }
-.dot-sm.green { background: #27c93f; }
+.dot-sm.red { background: #ff5f56; box-shadow: 0 0 6px rgba(255, 95, 86, 0.5); }
+.dot-sm.yellow { background: #ffbd2e; box-shadow: 0 0 6px rgba(255, 189, 46, 0.5); }
+.dot-sm.green { background: #27c93f; box-shadow: 0 0 6px rgba(39, 201, 63, 0.5); }
 
 .terminal-quick-actions {
   display: flex;
@@ -743,31 +766,34 @@ h1 {
 
 .term-btn {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--muted);
-  font-size: 10px;
-  padding: 4px 9px;
-  border-radius: 4px;
+  font-size: 10.5px;
+  padding: 5px 11px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .term-btn:hover {
   background: var(--red);
   color: #fff;
   border-color: var(--red);
+  box-shadow: 0 0 10px rgba(255, 41, 77, 0.35);
 }
 
 .terminal-console {
-  background: #0a0b0e;
-  border: 1px solid var(--line);
+  background: #090a0d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-top: none;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  padding: 16px 20px;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  padding: 20px 24px;
   font-family: "DM Mono", monospace;
   font-size: 12px;
-  min-height: 180px;
+  min-height: 200px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
   max-height: 280px;
   overflow-y: auto;
   display: flex;
