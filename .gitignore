@@ -1,0 +1,7 @@
+# Node
+node_modules/
+dist/
+.DS_Store
+
+# Large media backup if needed
+*.mp4.bak
