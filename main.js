@@ -411,49 +411,50 @@
   function initNeonHelixDrift() {
     const root = document.getElementById("helixContainer");
     const canvas = document.getElementById("helixCanvas");
+    const section = document.getElementById("about") || root;
     if (!root || !canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const ADVANCED_DEFAULTS = {
-      halfTurnMs: 6200,
-      radius: 224,
-      halfPitch: 900,
-      rungsPerHalf: 40,
-      glyphSize: 12,
+      halfTurnMs: 6000,
+      radius: 260, // Enlarge radius for majestic centered presence
+      halfPitch: 1050, // Longer pitch for sweeping curve across the section
+      rungsPerHalf: 42,
+      glyphSize: 13,
       charShare: 100,
       outlineShare: 20,
-      axisX: 50,
-      axisY: 50,
-      axisAngle: -24,
+      axisX: 50, // Perfectly centered horizontally
+      axisY: 50, // Perfectly centered vertically
+      axisAngle: -22,
       axisBend: 0,
-      depthTilt: 45,
-      cameraDistance: 1800,
+      depthTilt: 44,
+      cameraDistance: 1750,
       focusDepth: 50,
-      focusBand: 15,
-      blurPx: 6,
+      focusBand: 18,
+      blurPx: 5.5,
       cyanColor: "#FFD800",
       warmColor: "#FF294D", // Ramu Crimson Red
       coolStop: 40,
       warmStop: 78,
       glyphOpacity: 95,
       farOpacity: 45,
-      hotGlow: 70,
-      hotGlowStart: 88,
+      hotGlow: 75,
+      hotGlowStart: 86,
       nodeShare: 4,
-      nodeSize: 34,
-      strandWidth: 3,
-      strandColor: "#00FF96",
+      nodeSize: 36,
+      strandWidth: 3.2,
+      strandColor: "#00FF96", // Cyber Mint
       haloColor: "#00FF57",
-      haloWidth: 16,
-      haloOpacity: 40,
+      haloWidth: 18,
+      haloOpacity: 42,
       hazeColor: "#1E3F6A",
       haze: 22,
       dustCount: 60,
       seed: 7,
-      lightRadius: 170,
-      parallax: 10,
-      hover: 50,
+      lightRadius: 180,
+      parallax: 12,
+      hover: 55,
       grain: 0,
       vignette: 0,
     };
@@ -470,12 +471,12 @@
 
     const vals = {
       speed: 95,
-      scale: 76,
-      density: 28,
+      scale: 96, // Larger scale for ambient background coverage
+      density: 30,
       hotColor: "#FF294D",
       coolColor: "#00FF96",
-      focusBlur: 38,
-      background: "#080809",
+      focusBlur: 36,
+      background: "transparent",
     };
 
     function parseColor(input) {
@@ -657,12 +658,12 @@
     const onDown = (e) => { onMove(e); pointer.downT = 1; };
     const onUp = () => { pointer.downT = 0; };
 
-    root.addEventListener("pointerenter", onMove);
-    root.addEventListener("pointermove", onMove);
-    root.addEventListener("pointerleave", onLeave);
-    root.addEventListener("pointerdown", onDown);
-    window.addEventListener("pointerup", onUp);
-    window.addEventListener("pointercancel", onUp);
+    section.addEventListener("pointerenter", onMove, { passive: true });
+    section.addEventListener("pointermove", onMove, { passive: true });
+    section.addEventListener("pointerleave", onLeave, { passive: true });
+    section.addEventListener("pointerdown", onDown, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
+    window.addEventListener("pointercancel", onUp, { passive: true });
 
     const mq = typeof window.matchMedia === "function" ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
 
@@ -729,8 +730,6 @@
       ctx.globalCompositeOperation = "source-over";
       ctx.globalAlpha = 1;
       ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = v.background;
-      ctx.fillRect(0, 0, W, H);
 
       const u800 = H / 800;
       const f = u800 * (Math.max(10, v.scale) / 100);
