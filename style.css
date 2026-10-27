@@ -176,15 +176,15 @@ nav {
   padding: 135px var(--pad) 46px;
   isolation: isolate;
   overflow: hidden;
-  background: radial-gradient(ellipse at 70% 40%, #2e0f18 0%, #120b10 35%, #080809 75%);
+  background: radial-gradient(ellipse at 72% 38%, #5a1424 0%, #200b14 42%, #080809 78%);
 }
 
 .hero:before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(8, 8, 9, 0.86) 0%, rgba(8, 8, 9, 0.28) 55%, rgba(8, 8, 9, 0.08) 80%),
-              linear-gradient(0deg, #080809 0%, transparent 42%);
+  background: linear-gradient(90deg, rgba(8, 8, 9, 0.55) 0%, rgba(8, 8, 9, 0.1) 48%, transparent 72%),
+              linear-gradient(0deg, rgba(8, 8, 9, 0.72) 0%, transparent 34%);
   z-index: -1;
   pointer-events: none;
 }
@@ -203,8 +203,8 @@ nav {
   inset: 0;
   object-fit: cover;
   display: block;
-  opacity: 0.94;
-  filter: saturate(1.12) contrast(1.1);
+  opacity: 1;
+  filter: brightness(1.22) contrast(1.1) saturate(1.25);
   transform: scale(1.03);
   transition: transform 0.12s ease-out;
   pointer-events: none;
@@ -244,6 +244,7 @@ h1 {
   font-weight: 600;
   position: relative;
   z-index: 2;
+  text-shadow: 0 4px 35px rgba(0, 0, 0, 0.85), 0 0 60px rgba(0, 0, 0, 0.65);
 }
 
 .hero-title span {
@@ -351,14 +352,117 @@ h1 {
   }
 }
 
-/* 001 / Intro */
+/* 001 / Intro (Page 2: The Mindset & Neon Helix Drift) */
 .intro {
-  padding: clamp(100px, 16vw, 220px) var(--pad);
+  padding: clamp(90px, 14vw, 180px) var(--pad);
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 40px;
+  grid-template-columns: 1fr 1.55fr;
+  gap: clamp(30px, 4vw, 60px);
   max-width: 1500px;
   margin: auto;
+  align-items: start;
+}
+
+.intro-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.intro-right {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   NEON HELIX DRIFT CARD (Originkit 3D Matrix Helix)
+   ========================================================================== */
+.helix-card {
+  margin-top: 24px;
+  background: rgba(14, 13, 17, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 41, 77, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.helix-card:hover {
+  border-color: rgba(255, 41, 77, 0.4);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 41, 77, 0.15);
+  transform: translateY(-2px);
+}
+
+.helix-header {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.helix-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.helix-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ff96;
+  box-shadow: 0 0 8px #00ff96;
+  animation: pulse-green 1.8s infinite ease-in-out;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.25); }
+}
+
+.helix-sub {
+  font-size: 9.5px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+}
+
+.helix-viewport {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  overflow: hidden;
+  background: #080809;
+  cursor: grab;
+}
+
+.helix-viewport:active {
+  cursor: grabbing;
+}
+
+.helix-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.helix-footer {
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.015);
+  font-size: 10px;
+}
+
+.helix-footer span {
+  color: #8c8890;
 }
 
 .intro h2 {
@@ -491,12 +595,29 @@ h1 {
   text-transform: uppercase;
   color: #ffffff;
   text-shadow: 0 4px 35px rgba(0, 0, 0, 0.8), 0 2px 10px rgba(0, 0, 0, 0.95);
-  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  transition: opacity 0.2s ease-out;
 }
 
 .film-heading span {
   color: var(--red);
   display: inline-block;
+}
+
+.portfolio-word {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(34px, 7.5vw, 105px);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.88;
+  white-space: nowrap;
+  text-shadow: 0 0 35px rgba(255, 41, 77, 0.75), 0 4px 40px rgba(0, 0, 0, 0.95);
+}
+
+.portfolio-word span {
+  color: var(--red);
+  text-shadow: 0 0 40px var(--red);
 }
 
 /* Minimalist Floating HUD */
