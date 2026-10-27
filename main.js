@@ -229,8 +229,11 @@
   // ==========================================================================
   const filmCanvas = document.getElementById('filmCanvas');
   const filmCtx = filmCanvas ? filmCanvas.getContext('2d', { alpha: false, desynchronized: true }) : null;
-  const filmSection = document.getElementById('film');
+  const heroDriftSection = document.getElementById('top');
+  const heroOverlay = document.getElementById('heroOverlay');
+  const filmTitleOverlay = document.getElementById('filmTitleOverlay');
   const filmHeading = document.getElementById('filmHeading');
+  const filmHud = document.getElementById('filmHud');
   const progressFill = document.getElementById('progressFill');
   const progressText = document.getElementById('progressText');
 
@@ -371,11 +374,65 @@
     updateFilmHeading(progressFraction);
   }
 
+  // Unified Hero -> Drift Crossfade & Scrubber Engine
+  function handleHeroDriftUpdate(totalProgress) {
+    const FADE_END = 0.07; // Crossfade within first 7% of scroll
+
+    if (totalProgress <= FADE_END) {
+      // Phase 1: Hero territory - Reactive cursor video is visible
+      const heroAlpha = Math.max(0, 1 - (totalProgress / FADE_END));
+      if (heroCanvas) {
+        heroCanvas.style.opacity = heroAlpha.toFixed(3);
+        heroCanvas.style.pointerEvents = heroAlpha > 0.1 ? 'auto' : 'none';
+      }
+      if (heroOverlay) {
+        const overlayAlpha = Math.max(0, 1 - (totalProgress / (FADE_END * 0.8)));
+        heroOverlay.style.opacity = overlayAlpha.toFixed(3);
+        heroOverlay.style.transform = `translateY(${-totalProgress * 250}px)`;
+        heroOverlay.style.pointerEvents = overlayAlpha > 0.3 ? 'auto' : 'none';
+      }
+      if (filmTitleOverlay) {
+        filmTitleOverlay.style.opacity = '0';
+      }
+      if (filmHud) {
+        filmHud.style.opacity = '0';
+      }
+
+      // Pre-render frame 0 of drift film
+      renderFilmFrame(0);
+      updateFilmHUD(0);
+    } else {
+      // Phase 2: Drift sequence territory - Full 395-frame scrub
+      if (heroCanvas) {
+        heroCanvas.style.opacity = '0';
+        heroCanvas.style.pointerEvents = 'none';
+      }
+      if (heroOverlay) {
+        heroOverlay.style.opacity = '0';
+        heroOverlay.style.pointerEvents = 'none';
+      }
+
+      const filmAlpha = Math.min(1, (totalProgress - FADE_END) / 0.025);
+      if (filmTitleOverlay) {
+        filmTitleOverlay.style.opacity = filmAlpha.toFixed(3);
+      }
+      if (filmHud) {
+        filmHud.style.opacity = filmAlpha.toFixed(3);
+      }
+
+      // Map progress from (FADE_END .. 1.0) to (0.0 .. 1.0)
+      const driftProgress = Math.max(0, Math.min(1, (totalProgress - FADE_END) / (1 - FADE_END)));
+      const idx = Math.min(TOTAL_FILM_FRAMES - 1, Math.round(driftProgress * (TOTAL_FILM_FRAMES - 1)));
+      renderFilmFrame(idx);
+      updateFilmHUD(driftProgress);
+    }
+  }
+
   // Smooth click-to-cruise toggle on film canvas for hands-free viewing
   let isCruising = false;
   if (filmCanvas) {
     filmCanvas.addEventListener('click', () => {
-      if (!filmSection || !lenis) return;
+      if (!heroDriftSection || !lenis) return;
       if (isCruising) {
         isCruising = false;
         return;
@@ -384,8 +441,8 @@
       const currentPct = filmRenderedIndex / (TOTAL_FILM_FRAMES - 1);
       const targetPct = currentPct >= 0.95 ? 0 : 1;
       const targetScroll = targetPct === 1
-        ? filmSection.offsetTop + filmSection.offsetHeight - window.innerHeight
-        : filmSection.offsetTop;
+        ? heroDriftSection.offsetTop + heroDriftSection.offsetHeight - window.innerHeight
+        : heroDriftSection.offsetTop;
 
       lenis.scrollTo(targetScroll, {
         duration: 7.0 * Math.abs(targetPct - currentPct),
@@ -1017,17 +1074,15 @@
 
     if (reducedMotion) return;
 
-    // Rock-solid, smooth-inertia ScrollTrigger for the Drift Film section
+    // Unified Hero & Cinematic Drift ScrollTrigger (Page 1)
     ScrollTrigger.create({
-      trigger: '#film',
+      trigger: '#top',
       start: 'top top',
       end: 'bottom bottom',
       scrub: 0.75, // Smooth inertial scrub with no jumping or fighting
       onUpdate: (self) => {
-        const progress = Math.max(0, Math.min(1, self.progress));
-        const idx = Math.min(TOTAL_FILM_FRAMES - 1, Math.round(progress * (TOTAL_FILM_FRAMES - 1)));
-        renderFilmFrame(idx);
-        updateFilmHUD(progress);
+        const totalProgress = Math.max(0, Math.min(1, self.progress));
+        handleHeroDriftUpdate(totalProgress);
       },
     });
 
@@ -1127,11 +1182,11 @@ TOOLKIT ARSENAL:
   • Systems   : Linux / Hyprland / Omarchy, Git, LMMS Audio Studio
 `,
     drift: () => {
-      const film = document.getElementById('film');
-      if (film) {
-        film.scrollIntoView({ behavior: 'smooth' });
+      const top = document.getElementById('top');
+      if (top && lenis) {
+        lenis.scrollTo(top.offsetTop + window.innerHeight * 0.45, { duration: 1.2 });
       }
-      return `> Navigating to Cinematic Frame Sequence... Nitrous engaged.`;
+      return `> Navigating to Cinematic Drift Sequence... Nitrous engaged.`;
     },
     contact: () => `
 COMMUNICATION CHANNELS:
@@ -1211,4 +1266,26 @@ COMMUNICATION CHANNELS:
       });
     });
   }
+
+  // --------------------------------------------------------------------------
+  // 10. Nav Smooth-Scroll Handlers (Drift sequence & Home)
+  // --------------------------------------------------------------------------
+  document.querySelectorAll('a[href="#film"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const top = document.getElementById('top');
+      if (top && lenis) {
+        lenis.scrollTo(top.offsetTop + window.innerHeight * 0.45, { duration: 1.2 });
+      }
+    });
+  });
+
+  document.querySelectorAll('a[href="#top"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.0 });
+      }
+    });
+  });
 })();

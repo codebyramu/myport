@@ -167,33 +167,60 @@ nav {
 /* ==========================================================================
    HERO SECTION (Cursor-Reactive Canvas from Video Project 29)
    ========================================================================== */
-.hero {
-  min-height: 100svh;
+/* ==========================================================================
+   PAGE 1: COMBINED HERO & CINEMATIC DRIFT SEQUENCE
+   ========================================================================== */
+.hero-drift {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 135px var(--pad) 46px;
-  isolation: isolate;
-  overflow: hidden;
-  background: radial-gradient(ellipse at 72% 38%, #5a1424 0%, #200b14 42%, #080809 78%);
+  height: 420vh; /* Smooth, expansive scroll timeline for hero and 395-frame drift */
+  background: #080809;
 }
 
-.hero:before {
+.drift-anchor {
+  position: absolute;
+  top: 45vh;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.hero-drift-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  width: 100vw;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 72% 38%, #5a1424 0%, #200b14 42%, #080809 78%);
+  isolation: isolate;
+}
+
+.hero-drift-sticky:before {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, rgba(8, 8, 9, 0.55) 0%, rgba(8, 8, 9, 0.1) 48%, transparent 72%),
               linear-gradient(0deg, rgba(8, 8, 9, 0.72) 0%, transparent 34%);
-  z-index: -1;
+  z-index: 3;
   pointer-events: none;
 }
 
-.hero-art {
+.hero-drift-stage {
   position: absolute;
   inset: 0;
-  z-index: -2;
+  z-index: 1;
   overflow: hidden;
+}
+
+.film-canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  display: block;
+  z-index: 1;
+  cursor: pointer;
 }
 
 .hero-canvas {
@@ -203,11 +230,28 @@ nav {
   inset: 0;
   object-fit: cover;
   display: block;
+  z-index: 2;
   opacity: 1;
   filter: brightness(1.22) contrast(1.1) saturate(1.25);
   transform: scale(1.03);
-  transition: transform 0.12s ease-out;
+  transition: opacity 0.25s ease-out;
+  cursor: default;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 135px var(--pad) 46px;
+  z-index: 4;
   pointer-events: none;
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+
+.hero-overlay * {
+  pointer-events: auto;
 }
 
 .hero-top {
@@ -517,36 +561,7 @@ h1 {
 }
 
 /* ==========================================================================
-   002 / FULL-BLEED DRIFT SEQUENCE (BIGGER, UNOBSTRUCTED, 1-SCROLL DRIVEN)
-   ========================================================================== */
-.scroll-film {
-  height: 320vh; /* Controlled, natural, cinematic scroll pacing */
-  position: relative;
-  background: #080809;
-}
-
-.film-sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  width: 100vw;
-  overflow: hidden;
-  background: #080809;
-}
-
-.film-canvas {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  object-fit: cover;
-  display: block;
-  z-index: 1;
-  cursor: pointer;
-}
-
-/* ==========================================================================
-   CINEMATIC STORY TYPOGRAPHY OVERLAY (Top-Left per User Reference Images)
+   CINEMATIC DRIFT STORY TYPOGRAPHY OVERLAY (Top-Left per User Reference)
    ========================================================================== */
 .film-title-overlay {
   position: absolute;
@@ -1053,8 +1068,8 @@ h1 {
   .availability {
     display: none;
   }
-  .hero {
-    min-height: 92svh;
+  .hero-overlay {
+    padding: 100px var(--pad) 32px;
   }
   .hero-top {
     top: 22%;

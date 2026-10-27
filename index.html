@@ -49,39 +49,74 @@
     </div>
   </nav>
 
-  <!-- Hero Header (Interactive Cursor-Reactive 44-Frame Canvas from Video Project 29) -->
-  <header class="hero" id="top">
-    <div class="hero-art">
-      <canvas id="heroCanvas" class="hero-canvas" aria-label="Cursor-reactive interactive anime drift car"></canvas>
-      <audio id="heroAudio" loop preload="auto">
-        <source src="hero-audio.mp3" type="audio/mpeg">
-        <source src="hero-loop.mp4" type="audio/mp4">
-      </audio>
-    </div>
+  <!-- Hero & Cinematic Drift Sequence Combined (Page 1) -->
+  <section class="hero-drift" id="top" aria-label="Interactive cursor-reactive hero & cinematic car drift sequence">
+    <!-- Anchor for Drift navigation & terminal command -->
+    <div id="film" class="drift-anchor" aria-hidden="true"></div>
 
-    <div class="hero-top">
-      <div class="eyebrow mono">CREATIVE DEVELOPER / CHENNAI, IN</div>
-      <p>Building digital experiences where engineering meets imagination.</p>
-    </div>
+    <div class="hero-drift-sticky" id="heroDriftSticky">
+      <!-- Background Stage: Dual-Canvas Engine -->
+      <div class="hero-drift-stage">
+        <!-- Layer 1: 395-Frame Full Drift Film Canvas (Underneath, scrubbed on scroll) -->
+        <canvas class="film-canvas" id="filmCanvas" aria-label="Cinematic car drift animation"></canvas>
 
-    <h1 class="hero-title" aria-label="RAMU">
-      <span>RAMU</span><span style="color:var(--red)">®</span>
-    </h1>
+        <!-- Layer 2: 44-Frame Cursor-Reactive Hero Canvas (On Top; default reactive video, fades to drift on scroll) -->
+        <canvas class="hero-canvas" id="heroCanvas" aria-label="Cursor-reactive interactive anime drift car"></canvas>
+        
+        <audio id="heroAudio" loop preload="auto">
+          <source src="hero-audio.mp3" type="audio/mpeg">
+          <source src="hero-loop.mp4" type="audio/mp4">
+        </audio>
+      </div>
 
-    <div class="hero-bottom">
-      <p><strong>Code. Music. Craft.</strong><br>Ideas made interactive.</p>
-      <div class="hero-actions">
-        <!-- Audio Trigger Button for Hero Drift Audio -->
-        <button class="audio-btn mono" id="heroAudioBtn" aria-label="Toggle Sound">
-          <i data-lucide="volume-x" id="heroAudioIcon"></i>
-          <span id="heroAudioText">SOUND OFF</span>
-        </button>
-        <div class="scroll-cue mono">
-          <span class="scroll-line"></span> SCROLL TO EXPLORE
+      <!-- Layer 3: Hero Content (Default Page 1: Fades out as scroll begins) -->
+      <div class="hero-overlay" id="heroOverlay">
+        <div class="hero-top">
+          <div class="eyebrow mono">CREATIVE DEVELOPER / CHENNAI, IN</div>
+          <p>Building digital experiences where engineering meets imagination.</p>
+        </div>
+
+        <h1 class="hero-title" aria-label="RAMU">
+          <span>RAMU</span><span style="color:var(--red)">®</span>
+        </h1>
+
+        <div class="hero-bottom">
+          <p><strong>Code. Music. Craft.</strong><br>Ideas made interactive.</p>
+          <div class="hero-actions">
+            <!-- Audio Trigger Button for Hero Drift Audio -->
+            <button class="audio-btn mono" id="heroAudioBtn" aria-label="Toggle Sound">
+              <i data-lucide="volume-x" id="heroAudioIcon"></i>
+              <span id="heroAudioText">SOUND OFF</span>
+            </button>
+            <div class="scroll-cue mono">
+              <span class="scroll-line"></span> SCROLL TO EXPLORE
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layer 4: Cinematic Drift Story Typography Overlay (Choreographed captions: 37%, 74%, 76%, 85%) -->
+      <div class="film-title-overlay" id="filmTitleOverlay" aria-hidden="true">
+        <p class="film-seq-tag mono">PROLOGUE / DRIFT SEQUENCE</p>
+        <h2 class="film-heading" id="filmHeading">
+          MOTION<br>WITH <span>INTENT.</span>
+        </h2>
+      </div>
+
+      <!-- Layer 5: Minimalist Drift HUD (Bottom-Right) -->
+      <div class="film-hud-minimal" id="filmHud">
+        <div class="film-hud-pill mono">
+          <span class="hud-blink-dot"></span>
+          <span>DRIFT SEQUENCE</span>
+          <span class="hud-divider">//</span>
+          <span id="progressText" class="hud-pct">00%</span>
+        </div>
+        <div class="film-hud-track">
+          <div class="film-hud-fill" id="progressFill"></div>
         </div>
       </div>
     </div>
-  </header>
+  </section>
 
   <!-- Marquee Ticker -->
   <div class="marquee" aria-hidden="true">
@@ -141,40 +176,11 @@
     </div>
   </section>
 
-  <!-- 002 / Full-Bleed High-Octane Drift Sequence (395-Frame Canvas with 1-Scroll Trigger) -->
-  <section class="scroll-film" id="film" aria-label="1-Scroll cinematic car drift sequence">
-    <div class="film-sticky">
-      <!-- Full-screen edge-to-edge canvas -->
-      <canvas class="film-canvas" id="filmCanvas" aria-label="Cinematic car animation"></canvas>
-
-      <!-- Cinematic Story Typography Overlay (Top-Left per user reference) -->
-      <div class="film-title-overlay" aria-hidden="true">
-        <p class="film-seq-tag mono">SCROLL SEQUENCE / 002</p>
-        <h2 class="film-heading" id="filmHeading">
-          MOTION<br>WITH <span>INTENT.</span>
-        </h2>
-      </div>
-
-      <!-- Minimalist Unobstructed HUD (Bottom-Right) -->
-      <div class="film-hud-minimal">
-        <div class="film-hud-pill mono">
-          <span class="hud-blink-dot"></span>
-          <span>DRIFT SEQUENCE</span>
-          <span class="hud-divider">//</span>
-          <span id="progressText" class="hud-pct">00%</span>
-        </div>
-        <div class="film-hud-track">
-          <div class="film-hud-fill" id="progressFill"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 003 / Selected Works -->
+  <!-- 002 / Selected Works -->
   <section class="work" id="work">
     <div class="work-head">
       <div>
-        <p class="mono section-label">003 / SELECTED WORK</p>
+        <p class="mono section-label">002 / SELECTED WORK</p>
         <h2>Curiosity<br>in motion.</h2>
       </div>
       <p class="mono">A FEW THINGS I'M BUILDING ↘</p>
@@ -295,10 +301,10 @@
     </div>
   </section>
 
-  <!-- 004 / Toolkit -->
+  <!-- 003 / Toolkit -->
   <section class="skills" id="skills">
     <div>
-      <p class="mono section-label">004 / TOOLKIT</p>
+      <p class="mono section-label">003 / TOOLKIT</p>
       <h2>Curious by<br>default.</h2>
     </div>
     <div class="skill-list">
@@ -358,9 +364,9 @@
     </div>
   </section>
 
-  <!-- 005 / Contact -->
+  <!-- 004 / Contact -->
   <section class="contact" id="contact">
-    <p class="mono">005 / YOUR TURN</p>
+    <p class="mono">004 / YOUR TURN</p>
     <h2>Have an idea?<br><span>Let's build.</span></h2>
     <div class="contact-row">
       <p>Open to collaborations, high-impact engineering roles, internships, and interesting problems.</p>
