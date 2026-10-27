@@ -161,6 +161,15 @@
     lastCursorX = e.clientX;
   }, { passive: true });
 
+  // Mobile Touch Primer: smoothly initializes coordinates on initial screen contact
+  window.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches[0]) {
+      lastCursorY = e.touches[0].clientY;
+      lastCursorX = e.touches[0].clientX;
+      lastMoveTime = performance.now();
+    }
+  }, { passive: true });
+
   // Main Hero RAF: ONLY plays when cursor velocity > 0 (No auto-play on idle!)
   function heroRAF() {
     if (heroVelocity > 0.008) {
@@ -788,7 +797,9 @@
       ctx.globalAlpha = 1;
       ctx.clearRect(0, 0, W, H);
 
-      const u800 = H / 800;
+      const isMobileScreen = W < 768;
+      const mobileScaleMod = isMobileScreen ? Math.min(1, W / 580) : 1;
+      const u800 = (H / 800) * mobileScaleMod;
       const f = u800 * (Math.max(10, v.scale) / 100);
       const R = Math.max(4, adv.radius * f);
       const half = Math.max(20, adv.halfPitch * f);
